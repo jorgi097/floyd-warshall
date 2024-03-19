@@ -2,39 +2,56 @@ import os # Funciones del sistema operativo
 
 # ARREGLOS ORIGINALES
 nombres = [
-   "Mirador", "Huentitan", "Zoológico", "Independencia Norte", "San patricio","Igualdad", "Monumental", "Monte Olivette", "Circunvalación", "Facultad de Medicina","Juan Alvarez", "Alameda", "San juan de Dios", "Bicentenario", "Niños heroes","Agua azul", "Cipres", "Heroe de Nacozari", "Lazaro Cardenas", "El dean","Zona industrial", "López de legaspi", "Clemente Orozco", "Artes plasticas", "Escultura","Fray Angelico",
-   "Basilica", "Sanatorio", "Colegio victoria", "Plaza patria","Terranova", "Colon", "Lienzo charro", "Mezquitan", "Panteon de belen","Procuraduria", "Facultad de Medicina", "Obrero", "Tapalpita", "EL jaraz","Plutarco Elias Calles", "Haciendas", "Oblatos", "Bethel",
-   "Periferico Norte","Dermatologico", "Atemajac", "Division norte", "Avila Camacho", "Mezquitan","Refugio", "Juarez", "Mexicaltzingo", "Whashington", "Santa filomena","Unidad deportiva", "Urdaneta", "18 de marzo", "Isla raza", "Patria Sur","España", "Tesoro", "Periferico Sur",
-   "Central sur", "Vallarta","Jardines de la paz", "U. Panamericana", "Juan Palomar", "Seminario","Camara de comercio", "Minerva", "Centro Magno", "Americas", "Chapultepec","Paraninfo", "Juarez", "Plaza universidad", "San juan de Dios",   "Belisario Dominguez", "Oblatos","Cristobal de oñate", "San Andres","San Jacinto", "La aurora", "Tetlan", "San Isidro","Cucea","Parque","Seattle","Zoquipan","Country","Hospital General","Plaza patria","Colomos","Plaza Pabellon","San Javier","3 De Marzo","Jardines Universidad","Ferrocarril","Seminario","La Gran Plaza","San Ignacio","Estampida","Chapalita","Abastos","Mandarina","Ruiseñor","Unidad deportiva","Plaxa Las Torres","Cristo Rey","El dean","Nogalera","Alamo","Textiles","Tabachines","Centro Cultural","Zoquipan","Patria Sur","Division norte","Lomas","Plan De San Luis","Colon","Jose Maria Vigil","Zarco","Av. Mexico","Ladron De Guevara","Americas","Lafayette","Chapu","Monumento","Santa Eduwiges","Dia","Abastos","Parque De Las Estrellas","Expo","Plaza Del Sol","Arco Del Triunfo","Belenes","Mercado Del Mar","Zapopan Centro","Plaza patria","Circunvalacion","Division norte","Normal","Santuario","San juan de Dios","Independencia Sur","Plaza de la Bandera","CUCEI","Plaza Revolucion","Rio Nilo","Tlaquepaque","Nodo Revolucion","Central Camionera","Parque Metropolitano","La estancia","Guadalupe","Univa","Juan Diego","Estampida","Inglaterra","Embajada","Monumento","Argentina","Francia","Madrid","Whashington","Carteros","Agua azul","Gonzales Gallo","CUCEI","Medrano","San Rafael","Poetas","Barranca De Huentitan","Zoologico Guadalajara","Independencia Norte","Lomas Del Paraiso","Rancho Nuevo","La experiencia","El Batan","Periferico Norte","La Cantera","Tabachines","Constitucion","CCU","San Isidro","Belenes","Tuzania","Santa Margarita","Acueducto","5 De Mayo","San Juan De Ocotan","Vallarta","Estadio Chivas","Ciudad Judicial","Ciudad Granja","Parque Metropolitano","Chapalita Inn","El Colli","Felipe Ruvalcaba","Miramar","Mariano Otero","El Briseño","Agricola","Lopez Mateos","Iteso","Terminal De Autobuses","Periferico Sur","San Sebastianito","8 De Julio","Toluquilla","Adolf Horn","Artesanos","Las Piñatas","Carretera a Chapala","Circuito Metropolitano","Escobedo","Cortijo","Lomas Del Sur","Carretera a Tlajomulco","Concepcion","Adolf Horn","Periferico","Fray Angelico"
-]
-
-idl = [
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1,
-   2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2,
-   3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,3, 3, 3, 3,
-   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,4, 4, 4, 4, 4,4,
-   5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-   6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-   8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-   9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-   10,10,10,10,10,10,10,10,10
-]
+    "Mirador", "Huentitan", "Zoológico", "Independencia Norte", "San patricio", "Igualdad", "Monumental", "Monte Olivette", "Circunvalación", "Facultad de Medicina", "Juan Alvarez", "Alameda", "San juan de Dios", "Bicentenario", "Niños heroes", "Agua azul", "Cipres", "Heroe de Nacozari", "Lazaro Cardenas", "El dean", "Zona industrial", "López de legaspi", "Clemente Orozco", "Artes plasticas", "Escultura", "Fray Angelico",
+     
+    "Basilica", "Sanatorio", "Colegio victoria", "Plaza patria", "Terranova", "Colon", "Lienzo charro", "Mezquitan", "Panteon de belen", "Procuraduria", "Facultad de Medicina", "Obrero", "Tapalpita", "EL jaraz", "Plutarco Elias Calles", "Haciendas", "Oblatos", "Bethel", 
+    
+    "Periferico Norte", "Dermatologico", "Atemajac", "Division norte", "Avila Camacho", "Mezquitan", "Refugio", "Juarez", "Mexicaltzingo", "Whashington", "Santa filomena", "Unidad deportiva", "Urdaneta", "18 de marzo", "Isla raza", "Patria Sur", "España", "Tesoro", "Periferico Sur", 
+    
+    "Central sur", "Vallarta", "Jardines de la paz", "U. Panamericana", "Juan Palomar", "Seminario", "Camara de comercio", "Minerva", "Centro Magno", "Americas", "Chapultepec", "Paraninfo", "Juarez", "Plaza universidad", "San juan de Dios", "Belisario Dominguez", "Oblatos", "Cristobal de oñate", "San Andres", "San Jacinto", "La aurora", "Tetlan", 
+    
+    "San Isidro", "Cucea", "Parque", "Seattle", "Zoquipan", "Country", "Hospital General", "Plaza patria", "Colomos", "Plaza Pabellon", "San Javier", "3 De Marzo", "Jardines Universidad", "Ferrocarril", "Seminario", "La Gran Plaza", "San Ignacio", "Estampida", "Chapalita", "Abastos", "Mandarina", "Ruiseñor", "Unidad deportiva", "Plaxa Las Torres", "Cristo Rey", "El dean", "Nogalera", "Alamo", "Textiles", 
+    
+    "Tabachines", "Centro Cultural", "Zoquipan", "Patria Sur", "Division norte", "Lomas", "Plan De San Luis", "Colon", "Jose Maria Vigil", "Zarco", "Av. Mexico", "Ladron De Guevara", "Americas", "Lafayette", "Chapu", "Monumento", "Santa Eduwiges", "Dia", "Abastos", "Parque De Las Estrellas", "Expo", "Plaza Del Sol", 
+    
+    "Arco Del Triunfo", "Belenes", "Mercado Del Mar", "Zapopan Centro", "Plaza patria", "Circunvalacion", "Division norte", "Normal", "Santuario", "San juan de Dios", "Independencia Sur", "Plaza de la Bandera", "CUCEI", "Plaza Revolucion", "Rio Nilo", "Tlaquepaque", "Nodo Revolucion", "Central Camionera", 
+    
+    "Parque Metropolitano", "La estancia", "Guadalupe", "Univa", "Juan Diego", "Estampida", "Inglaterra", "Embajada", "Monumento", "Argentina", "Francia", "Madrid", "Whashington", "Carteros", "Agua azul", "Gonzales Gallo", "CUCEI", "Medrano", "San Rafael", "Poetas", 
+    
+    "Barranca De Huentitan", "Zoologico Guadalajara", "Independencia Norte", "Lomas Del Paraiso", "Rancho Nuevo", "La experiencia", "El Batan", "Periferico Norte", "La Cantera", "Tabachines", "Constitucion", "CCU", "San Isidro", "Belenes", "Tuzania", "Santa Margarita", "Acueducto", "5 De Mayo", "San Juan De Ocotan", "Vallarta", "Estadio Chivas", "Ciudad Judicial", "Ciudad Granja", "Parque Metropolitano", "Chapalita Inn", "El Colli", "Felipe Ruvalcaba", "Miramar", "Mariano Otero", "El Briseño", "Agricola", "Lopez Mateos", "Iteso", "Terminal De Autobuses", "Periferico Sur", "San Sebastianito", "8 De Julio", "Toluquilla", "Adolf Horn", "Artesanos", "Las Piñatas", "Carretera a Chapala", 
+    
+    "Circuito Metropolitano", "Escobedo", "Cortijo", "Lomas Del Sur", "Carretera a Tlajomulco", "Concepcion", "Adolf Horn", "Periferico", "Fray Angelico"
+ ]
+ 
+idl=[
+     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
+     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 
+     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 
+     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+     6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
+     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 
+     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 
+     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 
+     10, 10, 10, 10, 10, 10, 10, 10, 10
+ ]
+ 
 ide = [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,21, 22, 23, 24, 25,
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15, 16, 17,
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16, 17, 18,
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16, 17, 18, 19, 20, 21, 22,
-    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,
-    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,
-    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
-    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,
-    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,
-    0,1,2,3,4,5,6,7,8
-]
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 
+     0, 1, 2, 3, 4, 5, 6, 7, 8
+ ]
 
 
-
+for i, nombre in enumerate(nombres): # Transforma el arreglo a mayusculas
+    nombres[i] = nombre.upper()
 
 
 #DEFINICION DE FUNCIONES
@@ -48,7 +65,7 @@ def clear_screen():
 def guardar(nombre): # Guarda archivos con la informacion de las lineas y estaciones
     miarchivo = nombre + ".txt"
 
-    with open(miarchivo, "w") as archivo: # Abre / Crea el archivo en modo escritura
+    with open(miarchivo, "w", encoding="utf-8") as archivo: # Abre / Crea el archivo en modo escritura
         archivo.write("i      |Linea  |Estacion |Nombre\n")
         archivo.write("-------|-------|---------|----------------------\n")
         for i in range(len(nombres)):
@@ -65,8 +82,6 @@ def bubble_sort(arr):
                 arr[j], arr[j + 1] = arr[j + 1], arr[j] # Cambia los nombres de la estacion
                 ide[j], ide[j + 1] = ide[j + 1], ide[j] # Cambia los valores de estacion junto con el nombre
                 idl[j], idl[j + 1] = idl[j + 1], idl[j] # Cambia los valores de linea junto con el nombre
-
-
     return arr
 
 
@@ -104,30 +119,20 @@ def busqueda_secuencial(arr, elemento, posicion):
     return cont, indices
 
 # INICIO DEL PROGRAMA
-clear_screen()
-
-
 guardar("Original") # Guarda un archivo como tabla de los arreglos originales
-
-
-for i, nombre in enumerate(nombres): # Transforma el arreglo a mayusculas
-    nombres[i] = nombre.upper()
-
 
 bubble_sort(nombres) # Ordena los arreglos
 
-
-guardar("Ordenado") ## Guarda un archivo como tabla de los arreglos en mayusculas y ordenados
-
+guardar("Ordenado") ## Guarda un archivo como tabla de los arreglos ordenados
 
 
-
-#------------INICIO DE PROGRAMA VISUAL-------------
+#----------------------INICIO DE PROGRAMA VISUAL----------------------
+clear_screen()
 
 while True:
     clear_screen()
 
-    response = input("Que estacion desea buscar: ").upper()
+    response = input("QUE ESTACIÓN DESEA BUSCAR? ").upper()
     print()
 
     result = busqueda_binaria(nombres, response)
@@ -145,11 +150,11 @@ while True:
 
         opc = input("Deseas realizar otra busqueda? Y/N: ").lower()
         if opc == "n":
-            print("Saliendo...")
+            print("CERRANDO PROGRAMA...")
             break
     else:
         print(f"La estacion {response} no fue encontrada\n")
         opc = input("Deseas repetir la busqueda? Y/N: ").lower()
         if opc == "n":
-            print("Saliendo...")
+            print("CERRANDO PROGRAMA...")
             break
