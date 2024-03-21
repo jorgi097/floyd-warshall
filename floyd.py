@@ -5,7 +5,7 @@ matriz_T = []
 
 
 def importar_matriz(nombre_archivo, matriz):
-    with open(nombre_archivo, 'r', newline='') as archivo:
+    with open(nombre_archivo, 'r', newline='', encoding='utf-8') as archivo:
         reader = csv.reader(archivo)
         for row in reader:
             row = [int(cell) for cell in row] 
@@ -13,7 +13,7 @@ def importar_matriz(nombre_archivo, matriz):
             
         
 def guardar_matriz(nombre_archivo, matriz):
-    with open(nombre_archivo, 'w', newline='') as archivo:
+    with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
         writer = csv.writer(archivo)
         for row in matriz:
             writer.writerow(row)
