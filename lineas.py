@@ -5,15 +5,30 @@ import csv
 nombres = []
 idl = []
 ide = []
-        
-# Definicion de funciones        
-def importar_csv(nombre_archivo, arreglo):
+
+matriz_M = []
+matriz_T = []
+
+def importar_matriz(nombre_archivo, matriz):
+    with open(nombre_archivo, 'r', newline='', encoding='utf-8') as archivo:
+        reader = csv.reader(archivo)
+        for row in reader:
+            row = [int(cell) for cell in row] 
+            matriz.append(row)
+                 
+def exportar_matriz(nombre_archivo, matriz):
+    with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
+        writer = csv.writer(archivo)
+        for row in matriz:
+            writer.writerow(row)
+       
+def importar_lista(nombre_archivo, arreglo):
     with open(nombre_archivo, 'r', newline='', encoding='utf-8') as archivo:
         reader = csv.reader(archivo)
         for fila in reader:
             arreglo.extend(fila)
 
-def exportar_txt(nombre): # Guarda archivos con la informacion de las lineas y estaciones
+def exportar_lista(nombre): # Guarda archivos con la informacion de las lineas y estaciones
     miarchivo = nombre + ".txt"
 
     with open(miarchivo, "w", encoding="utf-8") as archivo: # Abre / Crea el archivo en modo escritura
@@ -58,63 +73,106 @@ def busqueda_binaria(arr, elemento):
 
 def busqueda_secuencial(arr, elemento, posicion):
     global contador
+    global indices
+    
+    indices_arriba = []
+    indices_abajo = []
     
     for i in range(posicion + 1, len(arr)): # Busca hacia arriba en el array usando busqueda secuencial
         if arr[i] == elemento:
             contador += 1
-            indices.append(i)
+            indices_arriba.append(i)
     
     for i in range(posicion -1, -1, -1): # Busca hacia abajo en el array usando busqueda secuencial
         if arr[i] == elemento:
             contador += 1
-            indices.append(i)
+            indices_abajo.append(i)
+            
+    indices = indices_abajo + indices + indices_arriba
 
+def buscar_linea():
+    while True:
+        limpiar_pantalla()
+        response = input("Que estacion deseas buscar?: ").upper()
+        print()
+
+        binaria_result = busqueda_binaria(nombres, response)
+
+        if binaria_result != -1: # Si la busqueda binaria arroja algo distinto a -1
+            global contador
+            global indices
+            
+            contador = 1
+            indices = [binaria_result]
+            
+            busqueda_secuencial(nombres, response, binaria_result) # Guarda cuantas veces se encontro y los indices donde se encontro
+
+            print(f"{response} se encuentra {contador} veces\n")
+
+            for i in range(contador): # Imprime las lineas y numeros de estacion donde se encuentra la estacion
+                print(f"LINEA: {idl[indices[i]]}, ID DE ESTACION: {ide[indices[i]]}")
+            print()
+
+            opc = input("Deseas realizar otra busqueda? Y/N: ").upper()
+            if opc == "N":
+                return
+        else:
+            print(f"La estacion {response} no fue encontrada\n")
+            opc = input("Deseas repetir la busqueda? Y/N: ").upper()
+            if opc == "N":
+                return
+
+def buscar_ruta():
+    limpiar_pantalla()
+    
 
 # Importar arreglos      
-importar_csv("Nombres_Original.csv", nombres)
-importar_csv("idL_Original.csv", idl)
-importar_csv("idE_Original.csv", ide)
+importar_lista("Nombres_Original.csv", nombres)
+importar_lista("idL_Original.csv", idl)
+importar_lista("idE_Original.csv", ide)
+importar_matriz("M_Original.csv", matriz_M)
+importar_matriz("T_Original.csv", matriz_T)
 
-#Arreglo a mayuscula
+# Floyd-Warshall
+n = len(matriz_M) 
+      
+for k in range(n):
+    for i in range(n):
+        for j in range(n):
+            if matriz_M[i][k] + matriz_M[k][j] < matriz_M[i][j]:
+                matriz_M[i][j] = matriz_M[i][k] + matriz_M[k][j]
+                matriz_T[i][j] = k
+
+# exportar_matriz('M_Final.csv', matriz_M)
+# exportar_matriz('T_Final.csv', matriz_T)         
+                    
 nombres = [nombre.upper() for nombre in nombres]
-
-
-exportar_txt("Original") # Antes de ordenar los arreglos
-
+# exportar_lista("Original") # Antes de ordenar los arreglos
 bubble_sort(nombres)
+# exportar_lista("Ordenado") # Despues de ordenar los arreglos
 
-# exportar_txt("Ordenado") # Despues de ordenar los arreglos
+
 
 
 #--------------------------------INICIO DE PROGRAMA VISUAL--------------------------------
-while True:
+while True:    
     limpiar_pantalla()
 
-    response = input("Que estacion deseas buscar? ").upper()
-    print()
+    # Mostramos las opciones al usuario
+    print("MENU\n")
+    print("1. Buscar informacion de una estacion")
+    print("2. Encontrar la ruta mas corta entre estaciones")
+    print("3. Opción 3\n")
 
-    binaria_result = busqueda_binaria(nombres, response)
+    opcion_menu = input("Ingrese el número de la opción que desee: ")
 
-    if binaria_result != -1: # Si la busqueda binaria arroja algo distinto a -1
-        
-        contador = 1
-        indices = [binaria_result]
-        
-        busqueda_secuencial(nombres, response, binaria_result) # Ejecuta la busqueda secuencial y guarda cuantas veces se encontro en total el termino y los indices donde se encontro
-
-        print(f"{response} se encuentra {contador} veces\n")
-
-        for i in range(contador): # Imprime las lineas y numeros de estacion donde se encuentra la estacion
-            print(f"LINEA: {idl[indices[i]]}, ID DE ESTACION: {ide[indices[i]]}")
-        print()
-
-        opc = input("Deseas realizar otra busqueda? Y/N: ").upper()
-        if opc == "N":
-            print("\nCerrando ...")
-            break
+    # Manejamos la opción ingresada por el usuario
+    if opcion_menu == "1":
+        buscar_linea()
+    elif opcion_menu == "2":
+        buscar_ruta()
+    elif opcion_menu == "3":
+        print("\nCerrando...")
+        break
     else:
-        print(f"La estacion {response} no fue encontrada\n")
-        opc = input("Deseas repetir la busqueda? Y/N: ").upper()
-        if opc == "N":
-            print("\nCerrando...")
-            break
+        print("Opción no válida.")
