@@ -5,9 +5,10 @@ matriz_T = []
 
 
 def importar_matriz(nombre_archivo, matriz):
-    with open(nombre_archivo, mode='r', newline='') as archivo:
+    with open(nombre_archivo, 'r', newline='') as archivo:
         reader = csv.reader(archivo)
         for row in reader:
+            row = [int(cell) for cell in row] 
             matriz.append(row)
             
         
