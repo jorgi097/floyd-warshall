@@ -18,9 +18,9 @@ nombres = [
     
     "Parque Metropolitano", "La estancia", "Guadalupe", "Univa", "Juan Diego", "Estampida", "Inglaterra", "Embajada", "Monumento", "Argentina", "Francia", "Madrid", "Whashington", "Carteros", "Agua azul", "Gonzales Gallo", "CUCEI", "Medrano", "San Rafael", "Poetas", 
     
-    "Barranca De Huentitan", "Zoologico Guadalajara", "Independencia Norte", "Lomas Del Paraiso", "Rancho Nuevo", "La experiencia", "El Batan", "Periferico Norte", "La Cantera", "Tabachines", "Constitucion", "CCU", "San Isidro", "Belenes", "Tuzania", "Santa Margarita", "Acueducto", "5 De Mayo", "San Juan De Ocotan", "Vallarta", "Estadio Chivas", "Ciudad Judicial", "Ciudad Granja", "Parque Metropolitano", "Chapalita Inn", "El Colli", "Felipe Ruvalcaba", "Miramar", "Mariano Otero", "El Briseño", "Agricola", "Lopez Mateos", "Iteso", "Terminal De Autobuses", "Periferico Sur", "San Sebastianito", "8 De Julio", "Toluquilla", "Adolf Horn", "Artesanos", "Las Piñatas", "Carretera a Chapala", 
+    "Barranca De Huentitan", "Zoologico Guadalajara", "Independencia Norte", "Lomas Del Paraiso", "Rancho Nuevo", "La experiencia", "El Batan", "Periferico Norte", "La Cantera", "Tabachines", "Constitucion", "CCU", "San Isidro", "Belenes", "Tuzania", "Santa Margarita", "Acueducto", "5 De Mayo", "San Juan De Ocotan", "Vallarta", "Estadio Chivas", "Ciudad Judicial", "Ciudad Granja", "Parque Metropolitano", "Chapalita Inn", "El Colli", "Felipe Ruvalcaba", "Miramar", "Mariano Otero", "El Briseño", "Agricola", "Lopez Mateos", "Iteso", "Terminal De Autobuses", "Periferico Sur", "San Sebastianito", "8 De Julio", "Toluquilla", "Adolf Horn", "Artesanos", "Las Pintas", "Carretera a Chapala", 
     
-    "Circuito Metropolitano", "Escobedo", "Cortijo", "Lomas Del Sur", "Carretera a Tlajomulco", "Concepcion", "Adolf Horn", "Periferico", "Fray Angelico"
+    "Fray Angelico", "Periferico", "Adolf Horn", "Concepcion", "Carretera a Tlajomulco", "Lomas Del Sur", "Cortijo", "Escobedo", "Circuito Metropolitano"
  ]
  
 idl=[
