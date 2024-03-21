@@ -71,24 +71,20 @@ def busqueda_binaria(arr, elemento):
 
     return -1  # El elemento no está presente en la lista
 
-def busqueda_secuencial(arr, elemento, posicion):
-    global contador
-    global indices
-    
+def busqueda_secuencial(arr, elemento, posicion, indices):   
     indices_arriba = []
     indices_abajo = []
-    
+
     for i in range(posicion + 1, len(arr)): # Busca hacia arriba en el array usando busqueda secuencial
         if arr[i] == elemento:
-            contador += 1
             indices_arriba.append(i)
     
     for i in range(posicion -1, -1, -1): # Busca hacia abajo en el array usando busqueda secuencial
         if arr[i] == elemento:
-            contador += 1
             indices_abajo.append(i)
             
     indices = indices_abajo + indices + indices_arriba
+    return indices
 
 def buscar_linea():
     while True:
@@ -98,15 +94,12 @@ def buscar_linea():
 
         binaria_result = busqueda_binaria(nombres, response)
 
-        if binaria_result != -1: # Si la busqueda binaria arroja algo distinto a -1
-            global contador
-            global indices
-            
-            contador = 1
+        if binaria_result != -1: # Si la busqueda binaria arroja algo distinto a -1            
             indices = [binaria_result]
             
-            busqueda_secuencial(nombres, response, binaria_result) # Guarda cuantas veces se encontro y los indices donde se encontro
-
+            indices = busqueda_secuencial(nombres, response, binaria_result, indices) # Guarda cuantas veces se encontro y los indices donde se encontro
+            contador = len(indices)
+            
             print(f"{response} se encuentra {contador} veces\n")
 
             for i in range(contador): # Imprime las lineas y numeros de estacion donde se encuentra la estacion
@@ -124,8 +117,13 @@ def buscar_linea():
 
 def buscar_ruta():
     limpiar_pantalla()
+    inicio_response = input("Ingrese la estacion de partida: ")
+    inicio_result = busqueda_binaria(nombres, inicio_response)
+    if inicio_result != -1:
+        indices = [inicio_result]
+        indices = busqueda_secuencial(nombres, inicio_response, inicio_result, indices)
     
-
+    
 # Importar arreglos      
 importar_lista("Nombres_Original.csv", nombres)
 importar_lista("idL_Original.csv", idl)
@@ -160,11 +158,11 @@ while True:
 
     # Mostramos las opciones al usuario
     print("MENU\n")
-    print("1. Buscar informacion de una estacion")
-    print("2. Encontrar la ruta mas corta entre estaciones")
-    print("3. Opción 3\n")
+    print("1) Buscar informacion de una estacion")
+    print("2) Encontrar la ruta mas corta entre estaciones")
+    print("3) Salir\n")
 
-    opcion_menu = input("Ingrese el número de la opción que desee: ")
+    opcion_menu = input("Ingrese la opción que desee: ")
 
     # Manejamos la opción ingresada por el usuario
     if opcion_menu == "1":
