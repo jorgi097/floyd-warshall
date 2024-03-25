@@ -128,11 +128,18 @@ def buscar_ruta():
     inicio_response = input("Ingrese la estacion de partida: ")
     destino_response = input("Ingrese la estacion de destino: ")
     
+       
     inicio_result = busqueda_binaria(nombres, inicio_response)
-    if inicio_result != -1:
-        indices = [inicio_result]
-        indices = busqueda_secuencial(nombres, inicio_response, inicio_result, indices)
+    destino_result = busqueda_binaria(nombres, destino_response)
+    
+    if inicio_result != -1 & destino_result != -1:
+        indices_inicio = [inicio_result]
+        indices_inicio = busqueda_secuencial(nombres, inicio_response, inicio_result, indices_inicio)
+        indices_destino = [destino_result]
+        indices_destino = busqueda_secuencial(nombres, destino_response, destino_result, indices_destino)
 
+    print(indices_inicio)
+    print(indices_destino)
 
     
 # Importar arreglos      
