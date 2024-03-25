@@ -6,6 +6,8 @@ nombres = []
 idl = []
 ide = []
 
+cruces = []
+
 matriz_M = []
 matriz_T = []
 
@@ -37,6 +39,12 @@ def exportar_lista(nombre): # Guarda archivos con la informacion de las lineas y
         for i in range(len(nombres)):
             linea_formateada = "{:<7}|{:<7}|{:<9}|{:<25}\n".format(i, idl[i], ide[i], nombres[i])
             archivo.write(linea_formateada)
+
+def importar_cruces(nombre_archivo, lista):
+    with open(nombre_archivo, 'r', newline="", encoding='utf-8') as archivo:
+        dictreader = csv.DictReader(archivo)
+        for row in dictreader:
+            lista.append(row)
 
 def limpiar_pantalla():
     if os.name == 'nt':  # nt = Windows
@@ -118,11 +126,14 @@ def buscar_linea():
 def buscar_ruta():
     limpiar_pantalla()
     inicio_response = input("Ingrese la estacion de partida: ")
+    destino_response = input("Ingrese la estacion de destino: ")
+    
     inicio_result = busqueda_binaria(nombres, inicio_response)
     if inicio_result != -1:
         indices = [inicio_result]
         indices = busqueda_secuencial(nombres, inicio_response, inicio_result, indices)
-    
+
+
     
 # Importar arreglos      
 importar_lista("Nombres_Original.csv", nombres)
@@ -130,6 +141,7 @@ importar_lista("idL_Original.csv", idl)
 importar_lista("idE_Original.csv", ide)
 importar_matriz("M_Original.csv", matriz_M)
 importar_matriz("T_Original.csv", matriz_T)
+importar_cruces("Cruces.csv", cruces)
 
 # Floyd-Warshall
 n = len(matriz_M) 
