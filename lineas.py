@@ -125,8 +125,8 @@ def buscar_linea():
 
 def buscar_ruta():
     limpiar_pantalla()
-    inicio_response = input("Ingrese la estacion de partida: ")
-    destino_response = input("Ingrese la estacion de destino: ")
+    inicio_response = input("Ingrese la estacion de partida: ").upper()
+    destino_response = input("Ingrese la estacion de destino: ").upper()
     
        
     inicio_result = busqueda_binaria(nombres, inicio_response)
@@ -140,7 +140,7 @@ def buscar_ruta():
 
     print(indices_inicio)
     print(indices_destino)
-
+    input()
     
 # Importar arreglos      
 importar_lista("Nombres_Original.csv", nombres)
