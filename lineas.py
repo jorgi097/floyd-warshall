@@ -52,6 +52,10 @@ def limpiar_pantalla():
     elif os.name != 'nt': # De lo contrario es Unix/Linux/Mac
         os.system('clear')
 
+def es_cruce(nombre):
+    result = any(nombre in diccionario.values() for diccionario in cruces)
+    return result
+
 def bubble_sort(arr): 
     n = len(arr)
 
@@ -127,6 +131,8 @@ def buscar_ruta():
     limpiar_pantalla()
     inicio_response = input("Ingrese la estacion de partida: ").upper()
     destino_response = input("Ingrese la estacion de destino: ").upper()
+    # inicio_response = "SAN JUAN DE DIOS"
+    # destino_response = "PLAZA PATRIA"
     
        
     inicio_result = busqueda_binaria(nombres, inicio_response)
@@ -137,11 +143,32 @@ def buscar_ruta():
         indices_inicio = busqueda_secuencial(nombres, inicio_response, inicio_result, indices_inicio)
         indices_destino = [destino_result]
         indices_destino = busqueda_secuencial(nombres, destino_response, destino_result, indices_destino)
-
-    print(indices_inicio)
-    print(indices_destino)
-    input()
-    
+        len_inicio = len(indices_inicio)
+        len_destino = len(indices_destino)
+        inicio_cruce = es_cruce(inicio_response)
+        destino_cruce = es_cruce(destino_response)
+        inicio_lineas = []
+        inicio_estaciones = []
+        destino_lineas = []
+        destino_estaciones = []
+        
+        if inicio_response == destino_response:
+            print("Ingreso la misma ruta dos veces. Intente de nuevo.")
+        
+        if not inicio_cruce:
+            for i in range(len_inicio):
+                linea = idl[indices_inicio[i]]
+                estacion = ide[indices_inicio[i]]
+                inicio_lineas.append(linea)
+                inicio_estaciones.append(estacion)
+        
+        if not destino_cruce:
+            for i in range(len_destino):
+                linea = idl[indices_destino[i]]
+                estacion = ide[indices_destino[i]]
+                destino_lineas.append(linea)
+                destino_estaciones.append(estacion)
+        
 # Importar arreglos      
 importar_lista("Nombres_Original.csv", nombres)
 importar_lista("idL_Original.csv", idl)
@@ -164,10 +191,11 @@ for k in range(n):
 # exportar_matriz('T_Final.csv', matriz_T)         
                     
 nombres = [nombre.upper() for nombre in nombres]
+cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for diccionario in cruces]
+
 # exportar_lista("Original") # Antes de ordenar los arreglos
 bubble_sort(nombres)
-# exportar_lista("Ordenado") # Despues de ordenar los arreglos
-
+#exportar_lista("Ordenado") # Despues de ordenar los arreglos
 
 
 
