@@ -1,6 +1,6 @@
 import os
 import csv
-
+  
 # Arreglos vacios
 nombres = []
 idl = []
@@ -11,6 +11,7 @@ cruces = []
 matriz_M = []
 matriz_T = []
 
+#Funciones
 def importar_matriz(nombre_archivo, matriz):
     with open(nombre_archivo, 'r', newline='', encoding='utf-8') as archivo:
         reader = csv.reader(archivo)
@@ -30,7 +31,7 @@ def importar_lista(nombre_archivo, arreglo):
         for fila in reader:
             arreglo.extend(fila)
 
-def exportar_lista(nombre): # Guarda archivos con la informacion de las lineas y estaciones
+def exportar_lista(nombre):
     miarchivo = nombre + ".txt"
 
     with open(miarchivo, "w", encoding="utf-8") as archivo: # Abre / Crea el archivo en modo escritura
@@ -52,6 +53,14 @@ def limpiar_pantalla():
     elif os.name != 'nt': # De lo contrario es Unix/Linux/Mac
         os.system('clear')
 
+def floyd_warshall(n):    
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if matriz_M[i][k] + matriz_M[k][j] < matriz_M[i][j]:
+                    matriz_M[i][j] = matriz_M[i][k] + matriz_M[k][j]
+                    matriz_T[i][j] = k
+
 def es_cruce(nombre):
     result = any(nombre in diccionario.values() for diccionario in cruces)
     return result
@@ -66,6 +75,13 @@ def bubble_sort(arr):
                 ide[j], ide[j + 1] = ide[j + 1], ide[j] # Cambia los valores de estacion junto con el nombre
                 idl[j], idl[j + 1] = idl[j + 1], idl[j] # Cambia los valores de linea junto con el nombre
     return arr
+
+def agrupar_lineas(arr):
+    indices_agrupados = []
+    for i in range(12):  # Iterar sobre los números del 0 al 11
+        indices = [indice for indice, valor in enumerate(arr) if valor == i]
+        indices_agrupados.append(indices)
+    return indices_agrupados
 
 def busqueda_binaria(arr, elemento):
     izquierda, derecha = 0, len(arr)
@@ -161,6 +177,9 @@ def buscar_ruta():
                 estacion = ide[indices_inicio[i]]
                 inicio_lineas.append(linea)
                 inicio_estaciones.append(estacion)
+        else:
+            k
+        
         
         if not destino_cruce:
             for i in range(len_destino):
@@ -168,36 +187,27 @@ def buscar_ruta():
                 estacion = ide[indices_destino[i]]
                 destino_lineas.append(linea)
                 destino_estaciones.append(estacion)
-        
-# Importar arreglos      
+    
+ 
+# Importar arreglos---------------------------------------------------------------------      
 importar_lista("Nombres_Original.csv", nombres)
 importar_lista("idL_Original.csv", idl)
 importar_lista("idE_Original.csv", ide)
 importar_matriz("M_Original.csv", matriz_M)
 importar_matriz("T_Original.csv", matriz_T)
 importar_cruces("Cruces.csv", cruces)
+agrupar_lineas(idl)
 
-# Floyd-Warshall
+# Modificar arreglos----------------------------------------------------------------------
 n = len(matriz_M) 
-      
-for k in range(n):
-    for i in range(n):
-        for j in range(n):
-            if matriz_M[i][k] + matriz_M[k][j] < matriz_M[i][j]:
-                matriz_M[i][j] = matriz_M[i][k] + matriz_M[k][j]
-                matriz_T[i][j] = k
-
+floyd_warshall(n)
 # exportar_matriz('M_Final.csv', matriz_M)
-# exportar_matriz('T_Final.csv', matriz_T)         
-                    
+# exportar_matriz('T_Final.csv', matriz_T)                       
 nombres = [nombre.upper() for nombre in nombres]
 cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for diccionario in cruces]
-
 # exportar_lista("Original") # Antes de ordenar los arreglos
 bubble_sort(nombres)
 #exportar_lista("Ordenado") # Despues de ordenar los arreglos
-
-
 
 #--------------------------------INICIO DE PROGRAMA VISUAL--------------------------------
 while True:    
