@@ -202,7 +202,7 @@ cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for dic
 ide = [int(id) for id in ide]
 idl = [int(id) for id in idl]
 # exportar_lista("Original") # Antes de ordenar los arreglos
-bubble_sort(nombres)
+#bubble_sort(nombres)
 #exportar_lista("Ordenado") # Despues de ordenar los arreglos
 
 
