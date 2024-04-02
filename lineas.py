@@ -76,13 +76,6 @@ def bubble_sort(arr):
                 idl[j], idl[j + 1] = idl[j + 1], idl[j] # Cambia los valores de linea junto con el nombre
     return arr
 
-def agrupar_lineas(arr):
-    indices_agrupados = []
-    for i in range(12):  # Iterar sobre los números del 0 al 11
-        indices = [indice for indice, valor in enumerate(arr) if valor == i]
-        indices_agrupados.append(indices)
-    return indices_agrupados
-
 def busqueda_binaria(arr, elemento):
     izquierda, derecha = 0, len(arr)
 
@@ -188,6 +181,7 @@ def buscar_ruta():
                 destino_lineas.append(linea)
                 destino_estaciones.append(estacion)
     
+
  
 # Importar arreglos---------------------------------------------------------------------      
 importar_lista("Nombres_Original.csv", nombres)
@@ -196,7 +190,7 @@ importar_lista("idE_Original.csv", ide)
 importar_matriz("M_Original.csv", matriz_M)
 importar_matriz("T_Original.csv", matriz_T)
 importar_cruces("Cruces.csv", cruces)
-agrupar_lineas(idl)
+
 
 # Modificar arreglos----------------------------------------------------------------------
 n = len(matriz_M) 
@@ -205,9 +199,13 @@ floyd_warshall(n)
 # exportar_matriz('T_Final.csv', matriz_T)                       
 nombres = [nombre.upper() for nombre in nombres]
 cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for diccionario in cruces]
+ide = [int(id) for id in ide]
+idl = [int(id) for id in idl]
 # exportar_lista("Original") # Antes de ordenar los arreglos
 bubble_sort(nombres)
 #exportar_lista("Ordenado") # Despues de ordenar los arreglos
+
+
 
 #--------------------------------INICIO DE PROGRAMA VISUAL--------------------------------
 while True:    
