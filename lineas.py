@@ -11,6 +11,8 @@ cruces = []
 matriz_M = []
 matriz_T = []
 
+idlCount = {}
+
 #Funciones
 def importar_matriz(nombre_archivo, matriz):
     with open(nombre_archivo, 'r', newline='', encoding='utf-8') as archivo:
@@ -182,7 +184,7 @@ def buscar_ruta():
                 destino_estaciones.append(estacion)
     
 
- 
+
 # Importar arreglos---------------------------------------------------------------------      
 importar_lista("Nombres_Original.csv", nombres)
 importar_lista("idL_Original.csv", idl)
@@ -204,6 +206,34 @@ idl = [int(id) for id in idl]
 # exportar_lista("Original") # Antes de ordenar los arreglos
 #bubble_sort(nombres)
 #exportar_lista("Ordenado") # Despues de ordenar los arreglos
+for i in range(1, 11):
+    idlCount[i] = idl.count(i)
+
+class Estacion:
+    def __init__(self, nombre, numero_estacion, cruce=False):
+        self.nombre = nombre
+        self.numero_estacion = numero_estacion
+        self.cruce = cruce
+
+estaciones = []
+lineas = []
+
+#covierte los datos de las estaciones y nombres en objetos y los junta en la lista de estaciones
+for nombre, numero in zip(nombres, ide):
+    estacion = Estacion(nombre, numero)
+    estaciones.append(estacion)
+
+#Separa las estaciones en lineas
+for num_linea, num_estaciones in idlCount.items():
+    sublista_linea = []
+    for i in range(0, num_estaciones):
+        sublista_linea.append(estaciones[i])  # Suponiendo que los índices de la lista comienzan desde 0
+    lineas.append(sublista_linea)
+
+#-----------------------------------------------------------------------------------------
+
+
+
 
 
 
@@ -218,7 +248,7 @@ while True:
     print("3) Salir\n")
 
     opcion_menu = input("Ingrese la opción que desee: ")
-
+        
     # Manejamos la opción ingresada por el usuario
     if opcion_menu == "1":
         buscar_linea()
