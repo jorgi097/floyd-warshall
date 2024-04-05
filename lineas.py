@@ -212,7 +212,7 @@ for i in range(1, 11):
 class Estacion:
     def __init__(self, nombre, numero_estacion, cruce=False):
         self.nombre = nombre
-        self.numero_estacion = numero_estacion
+        self.ide = numero_estacion
         self.cruce = cruce
 
 estaciones = []
@@ -227,11 +227,16 @@ for nombre, numero in zip(nombres, ide):
 for num_linea, num_estaciones in idlCount.items():
     sublista_linea = []
     for i in range(0, num_estaciones):
-        sublista_linea.append(estaciones[i])  # Suponiendo que los índices de la lista comienzan desde 0
+        sublista_linea.append(estaciones[i])
     lineas.append(sublista_linea)
 
 #-----------------------------------------------------------------------------------------
 
+for i, linea in enumerate(lineas):
+    print(f"-------------------Lineas{i}---------------------------")
+    for estacion in linea:
+        print("s")
+input()
 
 
 
