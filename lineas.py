@@ -5,8 +5,9 @@ import csv
 nombres = []
 idl = []
 ide = []
-
 cruces = []
+estaciones = []
+lineas = []
 
 matriz_M = []
 matriz_T = []
@@ -54,7 +55,7 @@ def limpiar_pantalla():
         os.system('cls')
     elif os.name != 'nt': # De lo contrario es Unix/Linux/Mac
         os.system('clear')
-
+limpiar_pantalla()
 def floyd_warshall(n):    
     for k in range(n):
         for i in range(n):
@@ -63,9 +64,12 @@ def floyd_warshall(n):
                     matriz_M[i][j] = matriz_M[i][k] + matriz_M[k][j]
                     matriz_T[i][j] = k
 
-def es_cruce(nombre):
-    result = any(nombre in diccionario.values() for diccionario in cruces)
-    return result
+def es_cruce():
+    for linea in lineas:
+        for estacion in linea:
+            for cruce in cruces:
+                if estacion.nombre in cruce.values():
+                    estacion.cruce = True
 
 def bubble_sort(arr): 
     n = len(arr)
@@ -79,6 +83,7 @@ def bubble_sort(arr):
     return arr
 
 def busqueda_binaria(arr, elemento):
+    bubble_sort(nombres)
     izquierda, derecha = 0, len(arr)
 
     while izquierda <= derecha:
@@ -108,6 +113,28 @@ def busqueda_secuencial(arr, elemento, posicion, indices):
             
     indices = indices_abajo + indices + indices_arriba
     return indices
+
+def agrupar_estaciones():
+    class Estacion:
+        def __init__(self, nombre, numero_estacion, cruce=False):
+            self.nombre = nombre
+            self.ide = numero_estacion
+            self.cruce = cruce
+    
+    #covierte los datos de las estaciones y nombres en objetos y los junta en la lista de estaciones
+    for nombre, numero in zip(nombres, ide):
+        estacion = Estacion(nombre, numero)
+        estaciones.append(estacion)
+        
+    #Separa las estaciones en lineas
+    inicio, control = 0, 0
+    for num_linea, num_estaciones in idlCount.items():
+        final = num_estaciones + control
+        sublista_linea = []
+        lineas.append(estaciones[inicio:final])
+        inicio = final
+        control = final
+    es_cruce()
 
 def buscar_linea():
     while True:
@@ -140,51 +167,44 @@ def buscar_linea():
 
 def buscar_ruta():
     limpiar_pantalla()
-    inicio_response = input("Ingrese la estacion de partida: ").upper()
-    destino_response = input("Ingrese la estacion de destino: ").upper()
-    # inicio_response = "SAN JUAN DE DIOS"
-    # destino_response = "PLAZA PATRIA"
+    inicio_response= "SAN JUAN DE DIOS"
+    destino_response= "SAN ISIDRO"
+    inicio_cruce = None
+    destino_cruce = None
     
-       
-    inicio_result = busqueda_binaria(nombres, inicio_response)
-    destino_result = busqueda_binaria(nombres, destino_response)
+    while True:    
+        # inicio_response = input("Ingrese la estacion de partida: ").upper()
+        inicio_result = busqueda_binaria(nombres, inicio_response)
+        if inicio_result != -1:
+            break
+    while True:     
+        # destino_response = input("Ingrese la estacion de destino: ").upper()
+        destino_result = busqueda_binaria(nombres, destino_response)
+        if destino_result != -1:
+            break
     
-    if inicio_result != -1 & destino_result != -1:
-        indices_inicio = [inicio_result]
-        indices_inicio = busqueda_secuencial(nombres, inicio_response, inicio_result, indices_inicio)
-        indices_destino = [destino_result]
-        indices_destino = busqueda_secuencial(nombres, destino_response, destino_result, indices_destino)
-        len_inicio = len(indices_inicio)
-        len_destino = len(indices_destino)
-        inicio_cruce = es_cruce(inicio_response)
-        destino_cruce = es_cruce(destino_response)
-        inicio_lineas = []
-        inicio_estaciones = []
-        destino_lineas = []
-        destino_estaciones = []
-        
-        if inicio_response == destino_response:
-            print("Ingreso la misma ruta dos veces. Intente de nuevo.")
-        
-        if not inicio_cruce:
-            for i in range(len_inicio):
-                linea = idl[indices_inicio[i]]
-                estacion = ide[indices_inicio[i]]
-                inicio_lineas.append(linea)
-                inicio_estaciones.append(estacion)
+    for cruce in cruces:    
+        if inicio_response in cruce['nombre']:
+            inicio_cruce = True  
+            break      
         else:
-            k
+            inicio_cruce = False
+
+    if not inicio_cruce:
+        linea_inicio = idl[inicio_result]
+
         
-        
-        if not destino_cruce:
-            for i in range(len_destino):
-                linea = idl[indices_destino[i]]
-                estacion = ide[indices_destino[i]]
-                destino_lineas.append(linea)
-                destino_estaciones.append(estacion)
+    if inicio_cruce:
+        for cruce in cruces:    
+            if inicio_response in cruce['nombre']:
+                destino_cruce = True     
+                break
+            else: destino_cruce = False
+            
+
+
+    input()
     
-
-
 # Importar arreglos---------------------------------------------------------------------      
 importar_lista("Nombres_Original.csv", nombres)
 importar_lista("idL_Original.csv", idl)
@@ -198,49 +218,27 @@ importar_cruces("Cruces.csv", cruces)
 n = len(matriz_M) 
 floyd_warshall(n)
 # exportar_matriz('M_Final.csv', matriz_M)
-# exportar_matriz('T_Final.csv', matriz_T)                       
-nombres = [nombre.upper() for nombre in nombres]
-cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for diccionario in cruces]
-ide = [int(id) for id in ide]
-idl = [int(id) for id in idl]
-# exportar_lista("Original") # Antes de ordenar los arreglos
+# exportar_matriz('T_Final.csv', matriz_T)    
+                   
+nombres = [nombre.upper() for nombre in nombres] # Todo a mayusculas
+cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for diccionario in cruces] # Todo a mayusculas
+
+ide = [int(id) for id in ide] # Todo a enetero
+idl = [int(id) for id in idl] # Todo a enetero
+
+#exportar_lista("Original") # Antes de ordenar los arreglos
 #bubble_sort(nombres)
 #exportar_lista("Ordenado") # Despues de ordenar los arreglos
-for i in range(1, 11):
+
+for i in range(1, 11): # Crear diccionaroi con numero de linea y cuantas estaciones tiene
     idlCount[i] = idl.count(i)
 
-class Estacion:
-    def __init__(self, nombre, numero_estacion, cruce=False):
-        self.nombre = nombre
-        self.ide = numero_estacion
-        self.cruce = cruce
-
-estaciones = []
-lineas = []
-
-#covierte los datos de las estaciones y nombres en objetos y los junta en la lista de estaciones
-for nombre, numero in zip(nombres, ide):
-    estacion = Estacion(nombre, numero)
-    estaciones.append(estacion)
-
-#Separa las estaciones en lineas
-for num_linea, num_estaciones in idlCount.items():
-    sublista_linea = []
-    for i in range(0, num_estaciones):
-        sublista_linea.append(estaciones[i])
-    lineas.append(sublista_linea)
+agrupar_estaciones()
 
 #-----------------------------------------------------------------------------------------
 
-for i, linea in enumerate(lineas):
-    print(f"-------------------Lineas{i}---------------------------")
-    for estacion in linea:
-        print("s")
-input()
-
-
-
-
+# print(lineas[0][0].nombre)
+# input()
 
 #--------------------------------INICIO DE PROGRAMA VISUAL--------------------------------
 while True:    
