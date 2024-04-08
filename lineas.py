@@ -8,6 +8,7 @@ ide = []
 cruces = []
 estaciones = []
 lineas = []
+nombre_linea = {}
 
 matriz_M = []
 matriz_T = []
@@ -55,7 +56,7 @@ def limpiar_pantalla():
         os.system('cls')
     elif os.name != 'nt': # De lo contrario es Unix/Linux/Mac
         os.system('clear')
-limpiar_pantalla()
+
 def floyd_warshall(n):    
     for k in range(n):
         for i in range(n):
@@ -70,6 +71,21 @@ def es_cruce():
             for cruce in cruces:
                 if estacion.nombre in cruce.values():
                     estacion.cruce = True
+
+def inicio_final():
+    for i, linea in enumerate(lineas):
+
+        estacion_inicio = None
+        estacion_final = None
+        
+        for estacion in linea:
+            if estacion.ide == 0:
+                estacion_inicio = estacion.nombre
+                
+            if estacion.ide == len(linea) - 1:
+                estacion_final = estacion.nombre
+        
+        nombre_linea[i+1] = {'inicio': estacion_inicio, 'final': estacion_final}
 
 def bubble_sort(arr): 
     n = len(arr)
@@ -134,7 +150,10 @@ def agrupar_estaciones():
         lineas.append(estaciones[inicio:final])
         inicio = final
         control = final
+    
     es_cruce()
+    
+    inicio_final()
 
 def buscar_linea():
     while True:
@@ -183,6 +202,7 @@ def buscar_ruta():
         if destino_result != -1:
             break
     
+    # Verifica si la estacion de inicio es un cruce de lineas
     for cruce in cruces:    
         if inicio_response in cruce['nombre']:
             inicio_cruce = True  
@@ -190,10 +210,11 @@ def buscar_ruta():
         else:
             inicio_cruce = False
 
+    # Guarda la linea en la que esta la estacion
     if not inicio_cruce:
         linea_inicio = idl[inicio_result]
 
-        
+    # Verifica si la estacion de destino es un cruce de lineas
     if inicio_cruce:
         for cruce in cruces:    
             if inicio_response in cruce['nombre']:
@@ -204,7 +225,8 @@ def buscar_ruta():
 
 
     input()
-    
+
+
 # Importar arreglos---------------------------------------------------------------------      
 importar_lista("Nombres_Original.csv", nombres)
 importar_lista("idL_Original.csv", idl)
@@ -213,6 +235,8 @@ importar_matriz("M_Original.csv", matriz_M)
 importar_matriz("T_Original.csv", matriz_T)
 importar_cruces("Cruces.csv", cruces)
 
+#Limpiar pantalla-------------------------------------------------------------------------
+limpiar_pantalla()
 
 # Modificar arreglos----------------------------------------------------------------------
 n = len(matriz_M) 
@@ -223,8 +247,8 @@ floyd_warshall(n)
 nombres = [nombre.upper() for nombre in nombres] # Todo a mayusculas
 cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for diccionario in cruces] # Todo a mayusculas
 
-ide = [int(id) for id in ide] # Todo a enetero
-idl = [int(id) for id in idl] # Todo a enetero
+ide = [int(id) for id in ide] # Todo a entero
+idl = [int(id) for id in idl] # Todo a entero
 
 #exportar_lista("Original") # Antes de ordenar los arreglos
 #bubble_sort(nombres)
@@ -237,8 +261,9 @@ agrupar_estaciones()
 
 #-----------------------------------------------------------------------------------------
 
-# print(lineas[0][0].nombre)
-# input()
+
+
+
 
 #--------------------------------INICIO DE PROGRAMA VISUAL--------------------------------
 while True:    
