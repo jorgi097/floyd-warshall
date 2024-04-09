@@ -1,7 +1,7 @@
 import os
 import csv
   
-# Arreglos vacios
+# Arreglos vacios-------------------------------------------------------------------------
 nombres = []
 idl = []
 ide = []
@@ -15,7 +15,7 @@ matriz_T = []
 
 idlCount = {}
 
-#Funciones
+#Funciones--------------------------------------------------------------------------------
 def importar_matriz(nombre_archivo, matriz):
     with open(nombre_archivo, 'r', newline='', encoding='utf-8') as archivo:
         reader = csv.reader(archivo)
@@ -186,48 +186,67 @@ def buscar_linea():
 
 def buscar_ruta():
     limpiar_pantalla()
-    inicio_response= "SAN JUAN DE DIOS"
-    destino_response= "SAN ISIDRO"
+    inicio_response= "LOMAS DEL SUR"
+    destino_response= "CONCEPCION"
     inicio_cruce = None
     destino_cruce = None
+    contador_incio, contador_destino = 5, 5
     
-    while True:    
+    while contador_incio > 0:    
         # inicio_response = input("Ingrese la estacion de partida: ").upper()
         inicio_result = busqueda_binaria(nombres, inicio_response)
         if inicio_result != -1:
             break
-    while True:     
+        else:
+            contador_incio -= 1
+            print("Intente de nuevo, tiene {} intentos.".format(contador_incio))
+            input()
+    while contador_destino > 0:     
         # destino_response = input("Ingrese la estacion de destino: ").upper()
         destino_result = busqueda_binaria(nombres, destino_response)
         if destino_result != -1:
             break
-    
-    # Verifica si la estacion de inicio es un cruce de lineas
-    for cruce in cruces:    
-        if inicio_response in cruce['nombre']:
-            inicio_cruce = True  
-            break      
         else:
-            inicio_cruce = False
-
-    # Guarda la linea en la que esta la estacion
-    if not inicio_cruce:
-        linea_inicio = idl[inicio_result]
-
-    # Verifica si la estacion de destino es un cruce de lineas
-    if inicio_cruce:
-        for cruce in cruces:    
-            if inicio_response in cruce['nombre']:
-                destino_cruce = True     
-                break
-            else: destino_cruce = False
+            contador_destino -= 1
+            print("Intente de nuevo, tiene {} intentos.".format(contador_destino))
+            input()
             
-
-
+    if contador_destino and contador_incio == 0:
+        return        
+            
+    # Guarda la linea y la estacion inicio
+    linea_inicio = idl[inicio_result]
+    estacion_inicio = ide[inicio_result]
+            
+    # Guarda la linea y la estacion destino
+    linea_destino = idl[destino_result]
+    estacion_destino = ide[destino_result]    
+        
+    #Verifica el cruce mas cercano de la estacion de incio
+    len_linea_inicio = len(lineas[linea_inicio-1])
+    for estacion in range(lineas[linea_inicio-1][estacion_inicio].ide, len_linea_inicio):
+        if lineas[linea_inicio-1][estacion].cruce:
+            print(lineas[linea_inicio-1][estacion].cruce)
+            print(lineas[linea_inicio-1][estacion].nombre)
+            break
+        if estacion == len_linea_inicio-1:
+            print("Esta es la ultima estacion: {}".format(lineas[linea_inicio-1][estacion].nombre))
+    print(lineas[linea_inicio-1][0].cruce)
+    print(lineas[linea_inicio-1][0].nombre)
+    for estacion in range(lineas[linea_inicio-1][estacion_inicio].ide-1, -1, -1):
+        if lineas[linea_inicio-1][estacion].cruce:
+            print(lineas[linea_inicio-1][estacion].cruce)
+            print(lineas[linea_inicio-1][estacion].nombre)
+            # break   
+        if estacion == 0:
+            print("Esta es la estacion 0: {}".format(lineas[linea_inicio-1][estacion].nombre))
+            
+            
+    print("antes del input")
     input()
 
 
-# Importar arreglos---------------------------------------------------------------------      
+# Importar arreglos-----------------------------------------------------------------------    
 importar_lista("Nombres_Original.csv", nombres)
 importar_lista("idL_Original.csv", idl)
 importar_lista("idE_Original.csv", ide)
@@ -259,13 +278,13 @@ for i in range(1, 11): # Crear diccionaroi con numero de linea y cuantas estacio
 
 agrupar_estaciones()
 
-#-----------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 
 
 
 
 
-#--------------------------------INICIO DE PROGRAMA VISUAL--------------------------------
+#--------------------------------INICIO DE PROGRAMA VISUAL---------------------------------
 while True:    
     limpiar_pantalla()
 
@@ -275,7 +294,7 @@ while True:
     print("2) Encontrar la ruta mas corta entre estaciones")
     print("3) Salir\n")
 
-    opcion_menu = input("Ingrese la opción que desee: ")
+    opcion_menu = "2"#input("Ingrese la opción que desee: ")
         
     # Manejamos la opción ingresada por el usuario
     if opcion_menu == "1":
