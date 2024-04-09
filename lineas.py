@@ -158,7 +158,7 @@ def agrupar_estaciones():
 def buscar_linea():
     while True:
         limpiar_pantalla()
-        response = input("Que estacion deseas buscar?: ").upper()
+        response = input("Que estacion deseas buscar?: ").upper().strip()
         print()
 
         binaria_result = busqueda_binaria(nombres, response)
@@ -175,12 +175,12 @@ def buscar_linea():
                 print(f"LINEA: {idl[indices[i]]}, ID DE ESTACION: {ide[indices[i]]}")
             print()
 
-            opc = input("Deseas realizar otra busqueda? Y/N: ").upper()
+            opc = input("Deseas realizar otra busqueda? Y/N: ").upper().strip()
             if opc == "N":
                 return
         else:
             print(f"La estacion {response} no fue encontrada\n")
-            opc = input("Deseas repetir la busqueda? Y/N: ").upper()
+            opc = input("Deseas repetir la busqueda? Y/N: ").upper().strip()
             if opc == "N":
                 return
 
@@ -191,9 +191,15 @@ def buscar_ruta():
     inicio_cruce = None
     destino_cruce = None
     contador_incio, contador_destino = 5, 5
+    len_linea_inicio = None
+    len_linea_destino = None
+    cruce_inicio = None
+    cruce_destino = None
+    inicio_recorrido = []
     
+    #-------------------------------------------------------------------------------------------INTRODUCE ESTACIONES----------
     while contador_incio > 0:    
-        # inicio_response = input("Ingrese la estacion de partida: ").upper()
+        # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
         inicio_result = busqueda_binaria(nombres, inicio_response)
         if inicio_result != -1:
             break
@@ -201,8 +207,11 @@ def buscar_ruta():
             contador_incio -= 1
             print("Intente de nuevo, tiene {} intentos.".format(contador_incio))
             input()
+    if contador_incio == 0:
+        return
+    
     while contador_destino > 0:     
-        # destino_response = input("Ingrese la estacion de destino: ").upper()
+        # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
         destino_result = busqueda_binaria(nombres, destino_response)
         if destino_result != -1:
             break
@@ -210,10 +219,10 @@ def buscar_ruta():
             contador_destino -= 1
             print("Intente de nuevo, tiene {} intentos.".format(contador_destino))
             input()
-            
-    if contador_destino and contador_incio == 0:
+    if contador_destino == 0:
         return        
-            
+    #-------------------------------------------------------------------------------------------GUARDA EN QUE LINEAS ESTAN----------        
+    
     # Guarda la linea y la estacion inicio
     linea_inicio = idl[inicio_result]
     estacion_inicio = ide[inicio_result]
@@ -221,7 +230,21 @@ def buscar_ruta():
     # Guarda la linea y la estacion destino
     linea_destino = idl[destino_result]
     estacion_destino = ide[destino_result]    
-        
+    
+    #-------------------------------------------------------------------------------------------SI ESTAN EN LA MISMA LINEA: VERIFICA SEGMENTO----------        
+    
+    if linea_inicio == linea_destino:
+        len_linea_inicio = len(lineas[linea_inicio-1])
+        for estacion in range(lineas[linea_inicio-1][estacion_inicio].ide, len_linea_inicio):
+            inicio_recorrido.append(lineas[linea_inicio-1][estacion])
+            if lineas[linea_inicio-1][estacion].cruce: #Cuando hay cruse (CASO 2)
+                cruce_inicio == lineas[linea_inicio-1][estacion] #Guarda el objeto estacion
+                break
+            if lineas[linea_inicio-1][estacion].nombre == lineas[linea_destino-1][estacion].nombre:
+                break
+        print(f"Paso {estacion+1}, {inicio_recorrido[estacion].nombre}")
+    
+    
     #Verifica el cruce mas cercano de la estacion de incio
     len_linea_inicio = len(lineas[linea_inicio-1])
     for estacion in range(lineas[linea_inicio-1][estacion_inicio].ide, len_linea_inicio):
@@ -231,8 +254,8 @@ def buscar_ruta():
             break
         if estacion == len_linea_inicio-1:
             print("Esta es la ultima estacion: {}".format(lineas[linea_inicio-1][estacion].nombre))
-    print(lineas[linea_inicio-1][0].cruce)
-    print(lineas[linea_inicio-1][0].nombre)
+
+
     for estacion in range(lineas[linea_inicio-1][estacion_inicio].ide-1, -1, -1):
         if lineas[linea_inicio-1][estacion].cruce:
             print(lineas[linea_inicio-1][estacion].cruce)
@@ -263,15 +286,15 @@ floyd_warshall(n)
 # exportar_matriz('M_Final.csv', matriz_M)
 # exportar_matriz('T_Final.csv', matriz_T)    
                    
-nombres = [nombre.upper() for nombre in nombres] # Todo a mayusculas
-cruces = [{clave: valor.upper() for clave, valor in diccionario.items()} for diccionario in cruces] # Todo a mayusculas
+nombres = [nombre.upper().strip() for nombre in nombres] # Todo a mayusculas
+cruces = [{clave: valor.upper().strip() for clave, valor in diccionario.items()} for diccionario in cruces] # Todo a mayusculas
 
 ide = [int(id) for id in ide] # Todo a entero
 idl = [int(id) for id in idl] # Todo a entero
 
 #exportar_lista("Original") # Antes de ordenar los arreglos
-#bubble_sort(nombres)
-#exportar_lista("Ordenado") # Despues de ordenar los arreglos
+# bubble_sort(nombres)
+# exportar_lista("Ordenado") # Despues de ordenar los arreglos
 
 for i in range(1, 11): # Crear diccionaroi con numero de linea y cuantas estaciones tiene
     idlCount[i] = idl.count(i)
