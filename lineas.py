@@ -396,63 +396,35 @@ def buscar_ruta():
 #--------------------------------------------------------------------------------------------------------------------------MISMA LINEA SEGMENTO NO CONTIGUO
 
             elif cruce_destino.nombre != cruce_inicio.nombre: #Si estan en distinto segmento
-                if inicio_recorrido_abajo and inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba
-                    destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
-                    
-                    #-----------------------------------------------------------------------------------------------FLOYD MATRIZ T                             
+                if inicio_recorrido_abajo and inicio_recorrido_arriba: #------------------------------------------Si el cruce de inicio fue hacia arriba
+                    destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce                  
 
-                    for column in range(len(matriz_T[cruce_inicio.cruceindex])):
+                    for column in range(len(matriz_T[cruce_inicio.cruceindex])): #Buscar en la matriz T
                         if column == cruce_destino.cruceindex:
-                            index_cruce_actual = matriz_T[cruce_inicio.cruceindex][column] # Guarda el primer punto de la Matriz T
+                            index_cruce_actual = matriz_T[cruce_inicio.cruceindex][column] # Guarda el primer cruce de la Matriz T
                             
-                            if index_cruce_actual == 99:
+                            if index_cruce_actual == 99: #Salir cuando no haya mas cruces
                                 break
-                            index_cruce_actual_list.append(cruces[index_cruce_actual])
+                            index_cruce_actual_list.append(cruces[index_cruce_actual]) #Añadir el primer cruce al arreglo 
                             print(index_cruce_actual_list[0])        
                     
-                    while index_cruce_actual != 99:
-                        for column in range(len(matriz_T[cruce_inicio.cruceindex])):
+                    while index_cruce_actual != 99: #Mientras no se encuentre con "infinito"
+                        for column in range(len(matriz_T[cruce_inicio.cruceindex])): #Recorrer el arreglo de la linea donde estan los puntos inicio y final
                             if column == index_cruce_actual:
-                                index_cruce_actual = matriz_T[cruce_inicio.cruceindex][column] # Guarda el primer punto de la Matriz T
+                                index_cruce_actual = matriz_T[cruce_inicio.cruceindex][column] # Guarda los puntos de la Matriz T
+                                
                                 if index_cruce_actual == 99:
                                     break
-                                index_cruce_actual_list.append(index_cruce_actual)
-                                index_cruce_actual_list.reverse()
+                                
+                                index_cruce_actual_list.append(index_cruce_actual) #Añadir los demas cruces al arreglo 
+                                
+                                index_cruce_actual_list.reverse() #Invertir el orden del recorrido para que se imprima correctamente
                         
-                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos
-                    
-                    print(recorrido_mismalinea_distintosegmento)
-                    
-                    for estacion in range(len(recorrido_mismalinea_distintosegmento)):
-                        print(estacion)
-                    
-                    for estacion in range(len(recorrido_mismalinea_distintosegmento)): #Imprime recorrido
-                        if estacion:
-                            print(f"Tomar la linea ({nombre_linea[linea_inicio]['inicio']} - {nombre_linea[linea_inicio]['final']}) en la estacion {recorrido_mismalinea_distintosegmento[estacion].nombre}.")
-                        elif estacion >0 and estacion < len(recorrido_mismalinea_distintosegmento)-1:
-                            print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
-                        else:
-                            print(f"Bajar en la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
-                        
-                        
-                elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
-                    destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
+                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                  
                     
                     
                     
-                    
-                    
-                    
-                    
-                    recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + destino_recorrido_abajo # Junta los recorridos
-
-                    for estacion in range(len(recorrido_mismalinea_distintosegmento)): #Imprime recorrido
-                        if estacion == 0:
-                            print(f"Tomar la linea ({nombre_linea[linea_inicio]['inicio']} - {nombre_linea[linea_inicio]['final']}) en la estacion {recorrido_mismalinea_distintosegmento[estacion].nombre}.")
-                        elif estacion >0 and estacion < len(recorrido_mismalinea_distintosegmento)-1:
-                            print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
-                        else:
-                            print(f"Bajar en la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
 
 
 # Importar arreglos-----------------------------------------------------------------------    
