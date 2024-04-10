@@ -71,6 +71,7 @@ def es_cruce():
             for cruce in cruces:
                 if estacion.nombre in cruce.values():
                     estacion.cruce = True
+                    estacion.cruceindex = int(cruce['index'])
 
 def inicio_final():
     for i, linea in enumerate(lineas):
@@ -132,10 +133,11 @@ def busqueda_secuencial(arr, elemento, posicion, indices):
 
 def agrupar_estaciones():
     class Estacion:
-        def __init__(self, nombre, numero_estacion, cruce=False):
+        def __init__(self, nombre, numero_estacion, cruce=False, cruceindex=None):
             self.nombre = nombre
             self.ide = numero_estacion
             self.cruce = cruce
+            self.cruceindex = cruceindex
     
     #covierte los datos de las estaciones y nombres en objetos y los junta en la lista de estaciones
     for nombre, numero in zip(nombres, ide):
@@ -187,8 +189,8 @@ def buscar_linea():
 def buscar_ruta():
     limpiar_pantalla()
     #--------------------------------------------------------------------------------------------------------------VARIABLES BUSCAR RUTA
-    inicio_response= "SANATORIO"
-    destino_response= "TERRANOVA"
+    inicio_response= "INDEPENDENCIA NORTE"
+    destino_response= "ADOLF HORN"
     inicio_cruce = None
     destino_cruce = None
     contador_incio, contador_destino = 5, 5
@@ -203,6 +205,7 @@ def buscar_ruta():
     salir_verificacion_arriba = None
     salir_verificacion_abajo = None
     recorrido_mismalinea_distintosegmento = []
+    index_cruce_actual_list = []
     
     #------------------------------------------------------------------------------------------------------------INTRODUCE ESTACIONES
     while contador_incio > 0:    
@@ -396,16 +399,35 @@ def buscar_ruta():
                 if inicio_recorrido_abajo and inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba
                     destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
                     
-                    #-----------------------------------------------------------------------------------------------FLOYD MATRIZ T
+                    #-----------------------------------------------------------------------------------------------FLOYD MATRIZ T                             
+
+                    for column in range(len(matriz_T[cruce_inicio.cruceindex])):
+                        if column == cruce_destino.cruceindex:
+                            index_cruce_actual = matriz_T[cruce_inicio.cruceindex][column] # Guarda el primer punto de la Matriz T
+                            
+                            if index_cruce_actual == 99:
+                                break
+                            index_cruce_actual_list.append(cruces[index_cruce_actual])
+                            print(index_cruce_actual_list[0])        
                     
+                    while index_cruce_actual != 99:
+                        for column in range(len(matriz_T[cruce_inicio.cruceindex])):
+                            if column == index_cruce_actual:
+                                index_cruce_actual = matriz_T[cruce_inicio.cruceindex][column] # Guarda el primer punto de la Matriz T
+                                if index_cruce_actual == 99:
+                                    break
+                                index_cruce_actual_list.append(index_cruce_actual)
+                                index_cruce_actual_list.reverse()
+                        
+                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos
                     
+                    print(recorrido_mismalinea_distintosegmento)
                     
-                    
-                    
-                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + destino_recorrido_abajo # Junta los recorridos
+                    for estacion in range(len(recorrido_mismalinea_distintosegmento)):
+                        print(estacion)
                     
                     for estacion in range(len(recorrido_mismalinea_distintosegmento)): #Imprime recorrido
-                        if estacion == 0:
+                        if estacion:
                             print(f"Tomar la linea ({nombre_linea[linea_inicio]['inicio']} - {nombre_linea[linea_inicio]['final']}) en la estacion {recorrido_mismalinea_distintosegmento[estacion].nombre}.")
                         elif estacion >0 and estacion < len(recorrido_mismalinea_distintosegmento)-1:
                             print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
@@ -431,15 +453,6 @@ def buscar_ruta():
                             print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
                         else:
                             print(f"Bajar en la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
-
-
-
-
-
-
-
-        
-        
 
 
 # Importar arreglos-----------------------------------------------------------------------    
@@ -469,16 +482,10 @@ idl = [int(id) for id in idl] # Todo a entero
 # bubble_sort(nombres)
 # exportar_lista("Ordenado") # Despues de ordenar los arreglos
 
-for i in range(1, 11): # Crear diccionariO con numero de linea y cuantas estaciones tiene
+for i in range(1, 11): # Crear diccionario con numero de linea y cuantas estaciones tiene
     idlCount[i] = idl.count(i)
 
 agrupar_estaciones()
-
-#------------------------------------------------------------------------------------------
-
-
-
-
 
 #--------------------------------INICIO DE PROGRAMA VISUAL---------------------------------
 while True:    
