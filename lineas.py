@@ -189,8 +189,10 @@ def buscar_linea():
 def buscar_ruta():
     limpiar_pantalla()
     #--------------------------------------------------------------------------------------------------------------VARIABLES BUSCAR RUTA
-    inicio_response= "INDEPENDENCIA NORTE"
-    destino_response= "ADOLF HORN"
+    inicio_response= "PERIFERICO"
+    destino_response= "CARRETERA A TLAJOMULCO"
+    # inicio_response= "INDEPENDENCIA NORTE"
+    # destino_response= "ADOLF HORN"
     inicio_cruce = None
     destino_cruce = None
     contador_incio, contador_destino = 5, 5
@@ -394,8 +396,13 @@ def buscar_ruta():
 
 
 #--------------------------------------------------------------------------------------------------------------------------MISMA LINEA SEGMENTO NO CONTIGUO
+                
+
 
             elif cruce_destino.nombre != cruce_inicio.nombre: #Si estan en distinto segmento
+                
+                recorrido_entre_segmentos = []
+                
                 if inicio_recorrido_abajo and inicio_recorrido_arriba: #------------------------------------------Si el cruce de inicio fue hacia arriba
                     destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce                  
 
@@ -405,8 +412,8 @@ def buscar_ruta():
                             
                             if index_cruce_actual == 99: #Salir cuando no haya mas cruces
                                 break
-                            index_cruce_actual_list.append(cruces[index_cruce_actual]) #Añadir el primer cruce al arreglo 
-                            print(index_cruce_actual_list[0])        
+                            index_cruce_actual_list.append(index_cruce_actual) #Añadir el primer cruce al arreglo 
+                                    
                     
                     while index_cruce_actual != 99: #Mientras no se encuentre con "infinito"
                         for column in range(len(matriz_T[cruce_inicio.cruceindex])): #Recorrer el arreglo de la linea donde estan los puntos inicio y final
@@ -419,10 +426,43 @@ def buscar_ruta():
                                 index_cruce_actual_list.append(index_cruce_actual) #Añadir los demas cruces al arreglo 
                                 
                                 index_cruce_actual_list.reverse() #Invertir el orden del recorrido para que se imprima correctamente
-                        
-                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    
+                    temp = []
+                    for elemento in index_cruce_actual_list: #Para cada elemento dentro de la lista de cruces
+                        for i, linea in enumerate(lineas):
+                            for j, estacion in enumerate(linea):
+                                if estacion.cruceindex == elemento: 
+                                    line = i+1
+                                    stationide = estacion.ide     
+                                    stationname = estacion.nombre
+                                    temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
+                                    # print(f"linea {i+1} estacion {estacion.nombre}")
+                                    
+                    print(temp)
+                    
+                    
                   
                     
+                    
+                    
+                    
+                    
+#----------------------------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR FINAL                    
+                        
+                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    
+                    
+                    
+                    # for elem in elementos:
+                    #     print(f"Tomar la línea {}, estación {}")
+                    #     print(f"Pasarás por las estaciones {}")
+                    #     print(f"Bajar en la estación {}")
+                    #     print(f"Trasbordar a la línea {}")
+                    #     print(f"Pasarás por las estaciones {}")
+                    #     print(f"Bajar en la estación {}")
+                    #     print(f"Trasbordar a la línea {}")
+                    #     print(f"Pasarás por las estaciones {}")
+
                     
                     
 
