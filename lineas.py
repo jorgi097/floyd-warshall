@@ -189,10 +189,13 @@ def buscar_linea():
 def buscar_ruta():
     limpiar_pantalla()
     #--------------------------------------------------------------------------------------------------------------VARIABLES BUSCAR RUTA
-    inicio_response= "PERIFERICO"
-    destino_response= "CARRETERA A TLAJOMULCO"
+    # inicio_response= "PERIFERICO"
+    # destino_response= "CARRETERA A TLAJOMULCO"
+    
     # inicio_response= "INDEPENDENCIA NORTE"
     # destino_response= "ADOLF HORN"
+    
+    
     inicio_cruce = None
     destino_cruce = None
     contador_incio, contador_destino = 5, 5
@@ -211,26 +214,26 @@ def buscar_ruta():
     
     #------------------------------------------------------------------------------------------------------------INTRODUCE ESTACIONES
     while contador_incio > 0:    
-        # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
+        inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
         inicio_result = busqueda_binaria(nombres, inicio_response)
         if inicio_result != -1:
             break
         else:
             contador_incio -= 1
             print("Intente de nuevo, tiene {} intentos.".format(contador_incio))
-            input()
+
     if contador_incio == 0:
         return
     
     while contador_destino > 0:     
-        # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
+        destino_response = input("Ingrese la estacion de destino: ").upper().strip()
         destino_result = busqueda_binaria(nombres, destino_response)
         if destino_result != -1:
             break
         else:
             contador_destino -= 1
             print("Intente de nuevo, tiene {} intentos.".format(contador_destino))
-            input()
+
     if contador_destino == 0:
         return        
     #------------------------------------------------------------------------------------------------------------GUARDA EN QUE LINEAS ESTAN     
@@ -325,7 +328,7 @@ def buscar_ruta():
                             print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
                         else:
                             print(f"Bajar en la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
-                        
+                            return
                         
                 elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
                     destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
@@ -344,7 +347,7 @@ def buscar_ruta():
                             print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
                         else:
                             print(f"Bajar en la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
-        
+                            return
         
     
 #---------------------------------------------------------------------------------------------------------------------De la estacion destino hacia arriba
@@ -374,7 +377,8 @@ def buscar_ruta():
                             print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
                         else:
                             print(f"Bajar en la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
-                        
+                        return
+                            
                 elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
                     destino_recorrido_arriba.reverse() #Invierte el orden del recorrido del destino al cruce
 
@@ -392,7 +396,7 @@ def buscar_ruta():
                             print(f"Pasar por la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")
                         else:
                             print(f"Bajar en la estacion: {recorrido_mismalinea_distintosegmento[estacion].nombre}")        
- 
+                            return
 
 
 #--------------------------------------------------------------------------------------------------------------------------MISMA LINEA SEGMENTO NO CONTIGUO
@@ -438,14 +442,9 @@ def buscar_ruta():
                                     temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
                                     # print(f"linea {i+1} estacion {estacion.nombre}")
                                     
-                    print(temp)
-                    
-                    
-                  
-                    
-                    
-                    
-                    
+                    for elem in range(len(temp)):
+                        print(temp[elem]['nombre'])  
+       
                     
 #----------------------------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR FINAL                    
                         
@@ -463,7 +462,10 @@ def buscar_ruta():
                     #     print(f"Trasbordar a la línea {}")
                     #     print(f"Pasarás por las estaciones {}")
 
-                    
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------DISTINTA LINEA                      
                     
 
 
@@ -490,7 +492,7 @@ cruces = [{clave: valor.upper().strip() for clave, valor in diccionario.items()}
 ide = [int(id) for id in ide] # Todo a entero
 idl = [int(id) for id in idl] # Todo a entero
 
-#exportar_lista("Original") # Antes de ordenar los arreglos
+# exportar_lista("Original") # Antes de ordenar los arreglos
 # bubble_sort(nombres)
 # exportar_lista("Ordenado") # Despues de ordenar los arreglos
 
@@ -509,13 +511,15 @@ while True:
     print("2) Encontrar la ruta mas corta entre estaciones")
     print("3) Salir\n")
 
-    opcion_menu = "2"#input("Ingrese la opción que desee: ")
+    opcion_menu = input("Ingrese la opción que desee: ")
         
     # Manejamos la opción ingresada por el usuario
     if opcion_menu == "1":
         buscar_linea()
+        break
     elif opcion_menu == "2":
         buscar_ruta()
+        break
     elif opcion_menu == "3":
         print("\nCerrando...")
         break
