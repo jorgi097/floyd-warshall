@@ -172,9 +172,9 @@ def buscar_linea(estacion, doprint = True):
 
             for i in range(contador): # Imprime las lineas y numeros de estacion donde se encuentra la estacion
                 print(f"LINEA: {idl[indices[i]]}, ID DE ESTACION: {ide[indices[i]]}")
-            print()
+            print()    
             
-            return
+        return indices, contador   
         
     else:
         print(f"La estacion {estacion} no fue encontrada\n")
@@ -201,29 +201,7 @@ def buscar_ruta():
     index_cruce_actual_list = []
     
     #------------------------------------------------------------------------------------------------------------INTRODUCE ESTACIONES
-    while contador_incio > 0:    
-        inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
-        inicio_result = busqueda_binaria(nombres, inicio_response)
-        if inicio_result != -1:
-            break
-        else:
-            contador_incio -= 1
-            print("Intente de nuevo, tiene {} intentos.".format(contador_incio))
-
-    if contador_incio == 0:
-        return
-    
-    while contador_destino > 0:     
-        destino_response = input("Ingrese la estacion de destino: ").upper().strip()
-        destino_result = busqueda_binaria(nombres, destino_response)
-        if destino_result != -1:
-            break
-        else:
-            contador_destino -= 1
-            print("Intente de nuevo, tiene {} intentos.".format(contador_destino))
-
-    if contador_destino == 0:
-        return        
+       
     #------------------------------------------------------------------------------------------------------------GUARDA EN QUE LINEAS ESTAN     
     
     # Guarda la linea y la estacion inicio
@@ -507,7 +485,7 @@ while True:
             limpiar_pantalla()
             response = input("Que estacion deseas buscar?: ").upper().strip()
             print()
-            buscar_linea(response)
+            agua, aguados = buscar_linea(response)
             opc = input("Deseas realizar otra busqueda? Y/N: ").upper().strip()
             if opc == "N":
                 break
