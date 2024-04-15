@@ -157,44 +157,32 @@ def agrupar_estaciones():
     
     inicio_final()
 
-def buscar_linea():
-    while True:
-        limpiar_pantalla()
-        response = input("Que estacion deseas buscar?: ").upper().strip()
-        print()
+def buscar_linea(estacion, doprint = True):
+    
+    binaria_result = busqueda_binaria(nombres, estacion)
 
-        binaria_result = busqueda_binaria(nombres, response)
-
-        if binaria_result != -1: # Si la busqueda binaria arroja algo distinto a -1            
-            indices = [binaria_result]
-            
-            indices = busqueda_secuencial(nombres, response, binaria_result, indices) # Guarda cuantas veces se encontro y los indices donde se encontro
-            contador = len(indices)
-            
-            print(f"{response} se encuentra {contador} veces\n")
+    if binaria_result != -1: # Si la busqueda binaria arroja algo distinto a -1            
+        indices = [binaria_result]
+        
+        indices = busqueda_secuencial(nombres, estacion, binaria_result, indices) # Guarda cuantas veces se encontro y los indices donde se encontro
+        contador = len(indices)
+        
+        if doprint:
+            print(f"{estacion} se encuentra {contador} veces\n")
 
             for i in range(contador): # Imprime las lineas y numeros de estacion donde se encuentra la estacion
                 print(f"LINEA: {idl[indices[i]]}, ID DE ESTACION: {ide[indices[i]]}")
             print()
-
-            opc = input("Deseas realizar otra busqueda? Y/N: ").upper().strip()
-            if opc == "N":
-                return
-        else:
-            print(f"La estacion {response} no fue encontrada\n")
-            opc = input("Deseas repetir la busqueda? Y/N: ").upper().strip()
-            if opc == "N":
-                return
+            
+            return
+        
+    else:
+        print(f"La estacion {estacion} no fue encontrada\n")
+        return
 
 def buscar_ruta():
     limpiar_pantalla()
     #--------------------------------------------------------------------------------------------------------------VARIABLES BUSCAR RUTA
-    # inicio_response= "PERIFERICO"
-    # destino_response= "CARRETERA A TLAJOMULCO"
-    
-    # inicio_response= "INDEPENDENCIA NORTE"
-    # destino_response= "ADOLF HORN"
-    
     
     inicio_cruce = None
     destino_cruce = None
@@ -515,8 +503,14 @@ while True:
         
     # Manejamos la opción ingresada por el usuario
     if opcion_menu == "1":
-        buscar_linea()
-        break
+        while True:
+            limpiar_pantalla()
+            response = input("Que estacion deseas buscar?: ").upper().strip()
+            print()
+            buscar_linea(response)
+            opc = input("Deseas realizar otra busqueda? Y/N: ").upper().strip()
+            if opc == "N":
+                break
     elif opcion_menu == "2":
         buscar_ruta()
         break
