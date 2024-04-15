@@ -180,13 +180,12 @@ def buscar_linea(estacion, doprint = True):
         print(f"La estacion {estacion} no fue encontrada\n")
         return
 
-def buscar_ruta():
+def buscar_ruta(inicio, destino, inicio_result, destino_result):
     limpiar_pantalla()
     #--------------------------------------------------------------------------------------------------------------VARIABLES BUSCAR RUTA
     
     inicio_cruce = None
     destino_cruce = None
-    contador_incio, contador_destino = 5, 5
     len_linea_inicio = None
     len_linea_destino = None
     cruce_inicio = None
@@ -200,8 +199,7 @@ def buscar_ruta():
     recorrido_mismalinea_distintosegmento = []
     index_cruce_actual_list = []
     
-    #------------------------------------------------------------------------------------------------------------INTRODUCE ESTACIONES
-       
+
     #------------------------------------------------------------------------------------------------------------GUARDA EN QUE LINEAS ESTAN     
     
     # Guarda la linea y la estacion inicio
@@ -489,9 +487,35 @@ while True:
             opc = input("Deseas realizar otra busqueda? Y/N: ").upper().strip()
             if opc == "N":
                 break
+            
     elif opcion_menu == "2":
-        buscar_ruta()
+        contador_incio, contador_destino = 5, 5
+        while contador_incio > 0:    
+            inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
+            inicio_result = busqueda_binaria(nombres, inicio_response)
+            if inicio_result != -1:
+                break
+            else:
+                contador_incio -= 1
+                print("Intente de nuevo, tiene {} intentos.".format(contador_incio))
+
+        if contador_incio == 0:
+            break
+    
+        while contador_destino > 0:     
+            destino_response = input("Ingrese la estacion de destino: ").upper().strip()
+            destino_result = busqueda_binaria(nombres, destino_response)
+            if destino_result != -1:
+                break
+            else:
+                contador_destino -= 1
+                print("Intente de nuevo, tiene {} intentos.".format(contador_destino))
+
+        if contador_destino == 0:
+            break 
+        buscar_ruta(inicio_response, destino_response, inicio_result, destino_result)
         break
+    
     elif opcion_menu == "3":
         print("\nCerrando...")
         break
