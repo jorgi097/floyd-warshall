@@ -15,6 +15,14 @@ matriz_T = []
 
 idlCount = {}
 
+class Estacion:
+        def __init__(self, nombre, numero_estacion, numero_linea, cruce=False, cruceindex=None):
+            self.nombre = nombre
+            self.ide = numero_estacion
+            self.idl = numero_linea
+            self.cruce = cruce
+            self.cruceindex = cruceindex
+
 #Funciones--------------------------------------------------------------------------------
 def importar_matriz(nombre_archivo, matriz):
     with open(nombre_archivo, 'r', newline='', encoding='utf-8') as archivo:
@@ -132,17 +140,13 @@ def busqueda_secuencial(arr, elemento, posicion, indices):
     return indices
 
 def agrupar_estaciones():
-    class Estacion:
-        def __init__(self, nombre, numero_estacion, cruce=False, cruceindex=None):
-            self.nombre = nombre
-            self.ide = numero_estacion
-            self.cruce = cruce
-            self.cruceindex = cruceindex
+    
     
     #covierte los datos de las estaciones y nombres en objetos y los junta en la lista de estaciones
-    for nombre, numero in zip(nombres, ide):
-        estacion = Estacion(nombre, numero)
+    for nombre, numero, linea in zip(nombres, ide, idl):
+        estacion = Estacion(nombre, numero, linea)
         estaciones.append(estacion)
+        
         
     #Separa las estaciones en lineas
     inicio, control = 0, 0
@@ -412,28 +416,40 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                                     line = i+1
                                     stationide = estacion.ide     
                                     stationname = estacion.nombre
-                                    temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
- 
+                                    station = Estacion(stationname, stationide, line)
+                                    temp.append(station)
+                                    # temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
+
+                        
+          
                     
-                    #----------------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR FINAL                    
+                    #---------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR                    
                      
                     
-                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[i].nombre for i, estacion in enumerate(inicio_recorrido_arriba)] + [temp[i]['nombre'] for i, item in enumerate(temp)] + [destino_recorrido_abajo[i].nombre for i, estacion in enumerate(destino_recorrido_abajo)] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + temp + destino_recorrido_abajo # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    
+                    
+                    for i, elem in enumerate(recorrido_mismalinea_distintosegmento):
+                            if isinstance(elem, Estacion) and i == 0:
+                                print(f"Tomar la línea {elem.idl}, estación {elem.nombre}")
+                            elif isinstance(elem, Estacion) and i < len(recorrido_mismalinea_distintosegmento)-1:
+                                if elem.nombre != recorrido_mismalinea_distintosegmento[i+1].nombre:
+                                    print(f"Pasarás por la estacion {elem.nombre}")
+                            elif isinstance(elem, Estacion) and i == len(recorrido_mismalinea_distintosegmento)-1:
+                                print(f"Bajar en la estación {elem.nombre}")
+                                # print(f"Trasbordar a la línea {}")
+                            
+
+                    input()    
+                    
+                    
+                    
                 
-                        
-                    print(recorrido_mismalinea_distintosegmento)  
                     
-                    
-                    # for elem in recorrido_mismalinea_distintosegmento:
-                    #     print(f"Tomar la línea {}, estación {}")
-                    #     print(f"Pasarás por las estaciones {}")
-                    #     print(f"Bajar en la estación {}")
-                    #     print(f"Trasbordar a la línea {}")
-                    #     print(f"Pasarás por las estaciones {}")
 
 
     #-------------------------------------------------------------------------------------------------------------------DISTINTA LINEA                      
-    if linea_inicio != linea_destino: # Si estan en distinta linea
+    elif linea_inicio != linea_destino: # Si estan en distinta linea
         print("HI")     
         
         
@@ -512,7 +528,7 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
+            inicio_response = "HUENTITAN"#input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
                 break
@@ -524,7 +540,7 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = input("Ingrese la estacion de destino: ").upper().strip()
+            destino_response = "ESCULTURA"#input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
                 break
