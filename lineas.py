@@ -431,7 +431,23 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
 
     #-------------------------------------------------------------------------------------------------------------------DISTINTA LINEA                      
     if linea_inicio != linea_destino: # Si estan en distinta linea
-        print("HI")          
+        print("HI")     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+             
 
 
 # Importar arreglos-----------------------------------------------------------------------    
