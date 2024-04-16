@@ -414,27 +414,23 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                                     stationname = estacion.nombre
                                     temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
  
-        
-                    
-                    
                     
                     #----------------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR FINAL                    
                      
                     
                     recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[i].nombre for i, estacion in enumerate(inicio_recorrido_arriba)] + [temp[i]['nombre'] for i, item in enumerate(temp)] + [destino_recorrido_abajo[i].nombre for i, estacion in enumerate(destino_recorrido_abajo)] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                
                         
                     print(recorrido_mismalinea_distintosegmento)  
                     
                     
-                    # for elem in elementos:
+                    # for elem in recorrido_mismalinea_distintosegmento:
                     #     print(f"Tomar la línea {}, estación {}")
                     #     print(f"Pasarás por las estaciones {}")
                     #     print(f"Bajar en la estación {}")
                     #     print(f"Trasbordar a la línea {}")
                     #     print(f"Pasarás por las estaciones {}")
-                    #     print(f"Bajar en la estación {}")
-                    #     print(f"Trasbordar a la línea {}")
-                    #     print(f"Pasarás por las estaciones {}")
+
 
     #-------------------------------------------------------------------------------------------------------------------DISTINTA LINEA                      
     if linea_inicio != linea_destino: # Si estan en distinta linea
@@ -516,7 +512,7 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = "HUENTITAN"#input("Ingrese la estacion de partida: ").upper().strip()
+            inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
                 break
@@ -528,7 +524,7 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = "ESCULTURA"#input("Ingrese la estacion de destino: ").upper().strip()
+            destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
                 break
