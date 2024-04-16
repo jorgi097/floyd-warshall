@@ -407,7 +407,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                                 
                     index_cruce_actual_list.reverse() #Invertir el orden del recorrido para que se imprima correctamente
                     
-                    temp = []
+                    cruces_busqueda = []
                     
                     for elemento in index_cruce_actual_list: #Para cada elemento dentro de la lista de cruces
                         for i, linea in enumerate(lineas):
@@ -417,21 +417,27 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                                     stationide = estacion.ide     
                                     stationname = estacion.nombre
                                     station = Estacion(stationname, stationide, line) #Convierte todo a objetos
-                                    temp.append(station) #Agrega los objetos a la lista
+                                    cruces_busqueda.append(station) #Agrega los objetos a la lista
           
-                    tempo = []
-                    for i, elem in enumerate(temp): #Elimina duplicados de temp
-                        if (i+1 < len(temp)):
-                            if elem.nombre != temp[i+1].nombre:
-                                tempo.append(elem)
-                        else:
-                            tempo.append(elem)
 
+                    cruces_busqueda_copy = cruces_busqueda[:]
+                    for elem in cruces_busqueda_copy: #Elimina duplicados de cruces_busqueda_copy
+                        if elem.idl != linea_inicio:
+                            cruces_busqueda.remove(elem)
+                            
+                    anexo = []
+                    for item in cruces_busqueda:
+                        for elem in range(inicio_recorrido_arriba[len(inicio_recorrido_arriba)-1].ide+1, cruces_busqueda[0].ide):
+                            anexar = lineas[linea_inicio-1][elem]
+                            anexo.append(anexar)
+                        
+                        print(anexo)
+                    
                     
                     #---------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR                    
                      
                     
-                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + tempo + destino_recorrido_abajo # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
                     
                     
                     for i, elem in enumerate(recorrido_mismalinea_distintosegmento):
@@ -530,7 +536,7 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = "LOMAS DEL SUR"
+            inicio_response = "ZOOLOGICO GUADALAJARA"
             # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
@@ -543,7 +549,7 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = "PERIFERICO"
+            destino_response = "TERMINAL DE AUTOBUSES"
             # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
