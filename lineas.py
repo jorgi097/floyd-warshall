@@ -421,23 +421,41 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
           
 
                     cruces_busqueda_copy = cruces_busqueda[:]
-                    for elem in cruces_busqueda_copy: #Elimina duplicados de cruces_busqueda_copy
+                    for elem in cruces_busqueda_copy: #Elimina duplicados de cruces_busqueda
                         if elem.idl != linea_inicio:
                             cruces_busqueda.remove(elem)
                             
-                    anexo = []
-                    for item in cruces_busqueda:
-                        for elem in range(inicio_recorrido_arriba[len(inicio_recorrido_arriba)-1].ide+1, cruces_busqueda[0].ide):
-                            anexar = lineas[linea_inicio-1][elem]
-                            anexo.append(anexar)
-                        
-                        print(anexo)
+                    cruces_busqueda_copy = cruces_busqueda[:]
+                    for i, elem in enumerate(cruces_busqueda_copy): #Recorre todo
+                        for j in range(elem.ide, cruces_busqueda_copy[i+1].ide):
+                            print(lineas[elem.idl-1][j].nombre)
+                            recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
                     
                     
                     #---------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR                    
                      
                     
                     recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    
+                    for estacion in recorrido_mismalinea_distintosegmento:
+                        for cruce in cruces:
+                            if estacion.nombre in cruce.values():
+                                estacion.cruce = True
+                                estacion.cruceindex = int(cruce['index'])
+                    
+                    # recorrido_mismalinea_distintosegmento_copy = recorrido_mismalinea_distintosegmento[:]
+                    # for i, elem in enumerate(recorrido_mismalinea_distintosegmento_copy): #Recorre todo
+                    #     if elem.cruce and recorrido_mismalinea_distintosegmento_copy[i+1].cruce: #Si es cruce y el que sigue tambien
+                    #         if elem.idl == recorrido_mismalinea_distintosegmento_copy[i+1].idl: #Si estan en la misma linea
+                    #             for j in range(elem.ide, recorrido_mismalinea_distintosegmento_copy[i+1].ide):
+                    #                 print(lineas[elem.idl-1][j].nombre)
+                    #                 recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
+                                                  
+                    
+                          
+                    input()
+                    
+                    
                     
                     
                     for i, elem in enumerate(recorrido_mismalinea_distintosegmento):
@@ -536,7 +554,7 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = "ZOOLOGICO GUADALAJARA"
+            inicio_response = "HUENTITAN"
             # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
@@ -549,7 +567,7 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = "TERMINAL DE AUTOBUSES"
+            destino_response = "ESCULTURA"
             # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
