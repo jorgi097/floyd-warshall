@@ -442,15 +442,17 @@ def buscar_ruta():
                                     temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
                                     # print(f"linea {i+1} estacion {estacion.nombre}")
                                     
-                    for elem in range(len(temp)):
-                        print(temp[elem]['nombre'])  
+                    # for elem in range(len(temp)):
+                    #     print(temp[elem]['nombre'])  
        
                     
 #----------------------------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR FINAL                    
                         
-                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    # recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
                     
+                    recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[i].nombre for i, estacion in enumerate(inicio_recorrido_arriba)] + [temp[i]['nombre'] for i, item in enumerate(temp)] + [destino_recorrido_abajo[i].nombre for i, estacion in enumerate(destino_recorrido_abajo)] 
                     
+                    print(recorrido_mismalinea_distintosegmento)
                     
                     # for elem in elementos:
                     #     print(f"Tomar la línea {}, estación {}")
