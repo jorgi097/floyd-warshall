@@ -233,8 +233,8 @@ def arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_
                         print(f"Bajar en la estacion: {inicio_recorrido_arriba[paso].nombre}")
                         salir_verificacion_arriba = True # Si se llego a este punto salir del loop anterior
     
-                if salir_verificacion_arriba: #Si se encuentra la estacion de destino buscando hacia el final de la ruta
-                    return inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba
+                # if salir_verificacion_arriba: #Si se encuentra la estacion de destino buscando hacia el final de la ruta
+    return inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba
 
 def buscar_ruta(inicio, destino, inicio_result, destino_result):
     def print_mismalinea():
@@ -416,31 +416,33 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                                     line = i+1
                                     stationide = estacion.ide     
                                     stationname = estacion.nombre
-                                    station = Estacion(stationname, stationide, line)
-                                    temp.append(station)
-                                    # temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
-
-                        
+                                    station = Estacion(stationname, stationide, line) #Convierte todo a objetos
+                                    temp.append(station) #Agrega los objetos a la lista
           
+                    tempo = []
+                    for i, elem in enumerate(temp): #Elimina duplicados de temp
+                        if (i+1 < len(temp)):
+                            if elem.nombre != temp[i+1].nombre:
+                                tempo.append(elem)
+                        else:
+                            tempo.append(elem)
+
                     
                     #---------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR                    
                      
                     
-                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + temp + destino_recorrido_abajo # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
+                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + tempo + destino_recorrido_abajo # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
                     
                     
                     for i, elem in enumerate(recorrido_mismalinea_distintosegmento):
                             if isinstance(elem, Estacion) and i == 0:
                                 print(f"Tomar la línea {elem.idl}, estación {elem.nombre}")
                             elif isinstance(elem, Estacion) and i < len(recorrido_mismalinea_distintosegmento)-1:
-                                if elem.nombre != recorrido_mismalinea_distintosegmento[i+1].nombre:
-                                    print(f"Pasarás por la estacion {elem.nombre}")
+                                print(f"Pasarás por la estacion {elem.nombre}")
                             elif isinstance(elem, Estacion) and i == len(recorrido_mismalinea_distintosegmento)-1:
                                 print(f"Bajar en la estación {elem.nombre}")
-                                # print(f"Trasbordar a la línea {}")
-                            
 
-                    input()    
+                        
                     
                     
                     
@@ -528,7 +530,8 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = "HUENTITAN"#input("Ingrese la estacion de partida: ").upper().strip()
+            inicio_response = "LOMAS DEL SUR"
+            # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
                 break
@@ -540,7 +543,8 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = "ESCULTURA"#input("Ingrese la estacion de destino: ").upper().strip()
+            destino_response = "PERIFERICO"
+            # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
                 break
