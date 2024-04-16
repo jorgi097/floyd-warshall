@@ -295,7 +295,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
     
         if cruce_inicio: # Si hay un cruce en el segmento incial de la ruta quiere decir que no estan en el mismo segmento
             
-            #-----------------Busca si la primera estacion de cruce es la misma que la de inicio, desde la estacion DESTINO hacia INICIO DE RUTA
+            #---------Busca si la primera estacion de cruce del destino es la misma que la de inicio, desde la estacion DESTINO hacia INICIO DE RUTA
             
             for estacion in range(lineas[linea_destino-1][estacion_destino].ide, -1, -1):      
                 destino_recorrido_abajo.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
@@ -306,7 +306,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
             
             destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
             
-            if inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba: Invierte el orden del recorrido del destino al cruce
+            if inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba: Invierte el orden del recorrido del destino al cruce--------------
                 
                 for estaciondestino in range(len(destino_recorrido_abajo)): # Elimina duplicados en el recorrido
                     for estacioninicio in range(len(inicio_recorrido_arriba)):
@@ -317,9 +317,8 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 
                 print_mismalinea()
                 
-            #--------------------------------------------------------------------------------------------------------------
                        
-            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
+            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo-------------------------------------------------------------------
     
                 for estaciondestino in range(len(destino_recorrido_abajo)): #E limina duplicados en el recorrido
                         for estacioninicio in range(len(inicio_recorrido_abajo)):
@@ -330,18 +329,20 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
 
                 print_mismalinea()
     
-            #-----------------Busca si la primera estacion de cruce es la misma que la de inicio, desde la estacion DESTINO hacia FINAL DE RUTA-----------------
-       
-            for estacion in range(lineas[linea_destino-1][estacion_destino].ide, len_linea_destino): 
-                destino_recorrido_arriba.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
+            #--------Busca si la primera estacion de cruce es la misma que la del destino, desde la estacion DESTINO hacia FINAL DE RUTA-----------------
+
+            if inicio_recorrido_arriba:  #Si el cruce de inicio fue hacia arriba-----------------------------------------------------------------
+            
+                for estacion in range(lineas[linea_destino-1][estacion_destino].ide, len_linea_destino): 
+                    destino_recorrido_arriba.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
+                    
+                    if lineas[linea_destino-1][estacion].cruce: 
+                        cruce_destino = lineas[linea_destino-1][estacion]  # Guarda la primera estacion que es cruce
+                        break # Si hay un cruce se sale
                 
-                if lineas[linea_destino-1][estacion].cruce: 
-                    cruce_destino = lineas[linea_destino-1][estacion]  # Guarda la primera estacion que es cruce
-                    break # Si hay un cruce se sale
+                destino_recorrido_arriba.reverse() #Invierte el orden del recorrido del destino al cruce
             
-            destino_recorrido_arriba.reverse() #Invierte el orden del recorrido del destino al cruce
-            
-            if inicio_recorrido_abajo and inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba
+            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo------------------------------------------------------------------
                 
                 for estaciondestino in range(len(destino_recorrido_arriba)): #Elimina duplicados en el recorrido
                     for estacioninicio in range(len(inicio_recorrido_arriba)):
@@ -351,10 +352,8 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + destino_recorrido_arriba # Junta los recorridos
                 
                 print_mismalinea()
-            
-            #--------------------------------------------------------------------------------------------------------------
                         
-            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
+            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo-----------------------------------------------------------------
                 
                 for estaciondestino in range(len(destino_recorrido_arriba)): #Elimina duplicados en el recorrido
                         for estacioninicio in range(len(inicio_recorrido_abajo)):
@@ -366,9 +365,9 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 print_mismalinea()
 
 
-#--------------------------------------------------------------------------------------------------------------------------MISMA LINEA SEGMENTO NO CONTIGUO
+        #------------------------------------------------------------------------------------------------------------------MISMA LINEA SEGMENTO NO CONTIGUO
                 
-        elif cruce_destino.nombre != cruce_inicio.nombre: #Si estan en distinto segmento
+        if cruce_destino.nombre != cruce_inicio.nombre: #Si estan en distinto segmento
             
             recorrido_entre_segmentos = []
             
@@ -414,7 +413,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     print(temp[elem]['nombre'])  
     
                 
-#----------------------------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR FINAL                    
+                #----------------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR FINAL                    
                     
                 recorrido_mismalinea_distintosegmento = [inicio_recorrido_arriba[0].nombre] + index_cruce_actual_list + [destino_recorrido_abajo[0].nombre] # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
                 
@@ -430,7 +429,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 #     print(f"Trasbordar a la línea {}")
                 #     print(f"Pasarás por las estaciones {}")
 
-#-----------------------------------------------------------------------------------------------------------------------DISTINTA LINEA                      
+    #-------------------------------------------------------------------------------------------------------------------DISTINTA LINEA                      
     if linea_inicio != linea_destino: # Si estan en distinta linea
         print("HI")          
 
@@ -477,7 +476,7 @@ while True:
     print("2) Encontrar la ruta mas corta entre estaciones")
     print("3) Salir\n")
 
-    opcion_menu = input("Ingrese la opción que desee: ")
+    opcion_menu = "2" #input("Ingrese la opción que desee: ")
         
     # Manejamos la opción ingresada por el usuario
     if opcion_menu == "1":
@@ -494,7 +493,7 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
+            inicio_response = "HUENTITAN"#input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
                 break
@@ -506,7 +505,7 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = input("Ingrese la estacion de destino: ").upper().strip()
+            destino_response = "ESCULTURA"#input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
                 break
