@@ -412,15 +412,8 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                                     line = i+1
                                     stationide = estacion.ide     
                                     stationname = estacion.nombre
-
-                                    
                                     temp.append({"linea": line, "nombre": stationname, "ide": stationide})     
-                                    # print(f"linea {i+1} estacion {estacion.nombre}")
-                    
-                    
-       
-                    # for elem in range(len(temp)):
-                    #     print(temp[elem]['nombre'])  
+ 
         
                     
                     
