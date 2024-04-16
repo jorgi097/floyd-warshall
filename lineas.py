@@ -308,7 +308,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
             
             if inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba: Invierte el orden del recorrido del destino al cruce
                 
-                for estaciondestino in range(len(destino_recorrido_abajo)): #Elimina duplicados en el recorrido
+                for estaciondestino in range(len(destino_recorrido_abajo)): # Elimina duplicados en el recorrido
                     for estacioninicio in range(len(inicio_recorrido_arriba)):
                         if destino_recorrido_abajo[estaciondestino].nombre == inicio_recorrido_arriba[estacioninicio].nombre:
                             del inicio_recorrido_arriba[estacioninicio]
@@ -321,7 +321,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                        
             elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
     
-                for estaciondestino in range(len(destino_recorrido_abajo)): #Elimina duplicados en el recorrido
+                for estaciondestino in range(len(destino_recorrido_abajo)): #E limina duplicados en el recorrido
                         for estacioninicio in range(len(inicio_recorrido_abajo)):
                             if destino_recorrido_abajo[estaciondestino].nombre == inicio_recorrido_abajo[estacioninicio].nombre:
                                 del inicio_recorrido_abajo[estacioninicio]
