@@ -554,7 +554,7 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = "HUENTITAN"
+            inicio_response = "EXPO"
             # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
@@ -567,7 +567,7 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = "ESCULTURA"
+            destino_response = "TABACHINES"
             # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
