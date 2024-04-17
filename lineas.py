@@ -537,8 +537,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
         inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba, cruce_inicio_arriba = arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_inicio, len_linea_inicio, cruce_inicio_arriba)
         if salir_verificacion_arriba:
             return     
-        
-        print("HI")
+
         
         #---------Busca si la primera estacion de cruce del destino es la misma que la de inicio, desde la estacion DESTINO hacia INICIO DE RUTA
  
@@ -571,7 +570,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
         
         
             
-        #---------------------------------------------------------------------------------------------------------MISMA LINEA, SEGMENTO CONTIGUO    
+        #-----------------------------------------------------------------------------------------------------DIDSTINTA LINEA, SEGMENTO CONTIGUO    
         if cruce_destino.nombre == cruce_inicio.nombre:    
             
             if inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba
@@ -635,7 +634,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 print_mismalinea()
 
 
-    #------------------------------------------------------------------------------------------------------------------MISMA LINEA SEGMENTO NO CONTIGUO
+    #------------------------------------------------------------------------------------------------------------DISTINTA LINEA SEGMENTO NO CONTIGUO
             
         if cruce_destino.nombre != cruce_inicio.nombre: #Si estan en distinto segmento
             
@@ -660,7 +659,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     elif columna == 99:
                         fila = index_cruce_actual_list[-1]
                         columna = cruce_destino.cruceindex
-    
+                    
     
                 
                 cruces_busqueda = []
@@ -841,8 +840,8 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            # inicio_response = "LOMAS DEL SUR"
-            inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
+            inicio_response = "HUENTITAN"
+            # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
                 break
@@ -854,8 +853,8 @@ while True:
             break
     
         while contador_destino > 0:     
-            # destino_response = "ZAPOPAN CENTRO"
-            destino_response = input("Ingrese la estacion de destino: ").upper().strip()
+            destino_response = "ESCULTURA"
+            # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
                 break
