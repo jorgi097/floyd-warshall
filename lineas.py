@@ -185,18 +185,19 @@ def buscar_linea(estacion, doprint = True):
         print(f"La estacion {estacion} no fue encontrada\n")
         return indices, contador
 
-def abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_inicio):
+def abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_inicio, cruce_inicio_abajo):
     salir_verificacion_abajo = None    
     for estacion in range(lineas[linea_inicio-1][estacion_inicio].ide, -1, -1):   
     
         inicio_recorrido_abajo.append(lineas[linea_inicio-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
 
         if lineas[linea_inicio-1][estacion].ide == 0:
-            return inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo
+            return inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo,cruce_inicio_abajo
     
-        if lineas[linea_inicio-1][estacion].cruce: # Guarda la primera estacion que es cruce
+        if lineas[linea_inicio-1][estacion].cruce and not lineas[linea_inicio-1][estacion].ide == 0 and not lineas[linea_inicio-1][estacion].ide == len(lineas[linea_inicio-1]): # Guarda la primera estacion que es cruce si no es el final o inicio de linea
             cruce_inicio = lineas[linea_inicio-1][estacion] 
-            return inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo # Sale porque si es cruce no es mismo segmento
+            cruce_inicio_abajo = True 
+            return inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo, cruce_inicio_abajo # Sale porque si es cruce no es mismo segmento
         
         if lineas[linea_inicio-1][estacion].nombre == destino_response: # Si en el recorrido se encuentra la estacion de destino imprime el recorrido 
             len_inicio_recorrido_abajo = len(inicio_recorrido_abajo)
@@ -210,17 +211,18 @@ def abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_in
                     salir_verificacion_abajo = True # Si se llego a este punto salir del loop anterior
 
         if salir_verificacion_abajo: #Si se encuentra la estacion de destino buscando hacia el inicio de la ruta
-            return inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo
+            return inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo, cruce_inicio_abajo
 
-def arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_inicio, len_linea_inicio):
+def arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_inicio, len_linea_inicio, cruce_inicio_arriba):
     salir_verificacion_arriba = None
     for estacion in range(lineas[linea_inicio-1][estacion_inicio].ide, len_linea_inicio): 
             
             inicio_recorrido_arriba.append(lineas[linea_inicio-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
             
-            if lineas[linea_inicio-1][estacion].cruce:  # Guarda la primera estacion que es cruce
-                cruce_inicio = lineas[linea_inicio-1][estacion] 
-                return inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba # Sale porque si es cruce no es mismo segmento
+            if lineas[linea_inicio-1][estacion].cruce and not lineas[linea_inicio-1][estacion].ide == 0 and not lineas[linea_inicio-1][estacion].ide == len(lineas[linea_inicio-1]): # Guarda la primera estacion que es cruce si no es el final o inicio de linea
+                cruce_inicio = lineas[linea_inicio-1][estacion]
+                cruce_inicio_arriba = True 
+                return inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba, cruce_inicio_arriba # Sale porque si es cruce no es mismo segmento
                 
             if lineas[linea_inicio-1][estacion].nombre == destino_response: # Si en el recorrido se encuentra la estacion de destino imprime el recorrido 
                 len_inicio_recorrido_arriba = len(inicio_recorrido_arriba)
@@ -234,7 +236,7 @@ def arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_
                         salir_verificacion_arriba = True # Si se llego a este punto salir del loop anterior
     
                 # if salir_verificacion_arriba: #Si se encuentra la estacion de destino buscando hacia el final de la ruta
-    return inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba
+    return inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba, cruce_inicio_arriba
 
 def buscar_ruta(inicio, destino, inicio_result, destino_result):
     def print_mismalinea():
@@ -264,6 +266,8 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
     
     index_cruce_actual_list = []
     
+    cruce_inicio_abajo = False
+    cruce_inicio_arriba = False
 
     #GUARDA EN QUE LINEAS ESTAN--------------------------------------------------------------------------------     
     
@@ -283,15 +287,17 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
     
     if linea_inicio == linea_destino: # Si estan en la misma linea
         
+        
+        
         #----------------------------------------------------------------Busca si el DESTINO esta desde la estacion INICIO hacia INICIO DE RUTA
    
-        inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo = abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_inicio) 
+        inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo , cruce_inicio_abajo= abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_inicio, cruce_inicio_abajo) 
         
         if salir_verificacion_abajo:
             return
         #-----------------------------------------------------------------Busca si el DESTINO esta desde la estacion INICIO hacia FINAL DE RUTA        
         
-        inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba = arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_inicio, len_linea_inicio)
+        inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba, cruce_inicio_arriba = arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_inicio, len_linea_inicio, cruce_inicio_arriba)
         if salir_verificacion_arriba:
             return
         
@@ -314,7 +320,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
             #---------------------------------------------------------------------------------------------------------MISMA LINEA, SEGMENTO CONTIGUO    
             if cruce_destino.nombre == cruce_inicio.nombre:    
                 
-                if inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba: Invierte el orden del recorrido del destino al cruce--------------
+                if inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba
                     
                     for estaciondestino in range(len(destino_recorrido_abajo)): # Elimina duplicados en el recorrido
                         for estacioninicio in range(len(inicio_recorrido_arriba)):
@@ -326,7 +332,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     print_mismalinea()
                     
                         
-                elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo-------------------------------------------------------------------
+                elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
         
                     for estaciondestino in range(len(destino_recorrido_abajo)): #Elimina duplicados en el recorrido
                             for estacioninicio in range(len(inicio_recorrido_abajo)):
@@ -341,7 +347,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
 
             if cruce_destino.nombre == cruce_inicio.nombre:
 
-                if inicio_recorrido_arriba:  #Si el cruce de inicio fue hacia arriba-----------------------------------------------------------------
+                if inicio_recorrido_arriba:  #Si el cruce de inicio fue hacia arriba
                 
                     for estacion in range(lineas[linea_destino-1][estacion_destino].ide, len_linea_destino): 
                         destino_recorrido_arriba.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
@@ -352,7 +358,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     
                     destino_recorrido_arriba.reverse() #Invierte el orden del recorrido del destino al cruce
                 
-                elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo------------------------------------------------------------------
+                elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
                     
                     for estaciondestino in range(len(destino_recorrido_arriba)): #Elimina duplicados en el recorrido
                         for estacioninicio in range(len(inicio_recorrido_arriba)):
@@ -363,7 +369,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     
                     print_mismalinea()
                             
-                elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo-----------------------------------------------------------------
+                elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
                     
                     for estaciondestino in range(len(destino_recorrido_arriba)): #Elimina duplicados en el recorrido
                             for estacioninicio in range(len(inicio_recorrido_abajo)):
@@ -381,9 +387,8 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 
                 recorrido_entre_segmentos = []
                 
-                if inicio_recorrido_arriba: #-------------------------------------------------------Si el cruce de inicio fue hacia arriba
-                    #destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce                  
-                    
+                if cruce_inicio_arriba: #-------------------------------------------------------Si el cruce de inicio fue hacia arriba
+                           
                     #Busca el primer cruce en la Matriz T
                     index_cruce_actual = matriz_T[cruce_inicio.cruceindex][cruce_destino.cruceindex]
                     index_cruce_actual_list.append(index_cruce_actual) #Añadir el primer cruce al arreglo 
@@ -391,6 +396,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     fila = cruce_inicio.cruceindex
                     columna = index_cruce_actual
                     
+                    #Busca los demas cruces en la Matriz T
                     while True:
                         if columna == cruce_destino.cruceindex and matriz_T[fila][columna] == 99:
                             break
@@ -400,9 +406,8 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                         elif columna == 99:
                             fila = index_cruce_actual_list[-1]
                             columna = cruce_destino.cruceindex
-                            
-         
-                    # index_cruce_actual_list.reverse() #Invertir el orden del recorrido para que se imprima correctamente
+        
+        
                     
                     cruces_busqueda = []
                     
@@ -425,26 +430,85 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     #         print(lineas[elem.idl-1][j].nombre)
                     #         recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
                     
+                               
+                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos
                     
-                    #---------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR                    
-                     
-                    
-                    recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos al primer cruce, entre cruces y del ultimo cruce a la estacion destino
-                    
-                    for estacion in recorrido_mismalinea_distintosegmento:
+                    for estacion in recorrido_mismalinea_distintosegmento: #Añade las propiedades de cruce a cada cruce
                         for cruce in cruces:
                             if estacion.nombre in cruce.values():
                                 estacion.cruce = True
                                 estacion.cruceindex = int(cruce['index'])
                                                
                     
-                    for i, elem in enumerate(recorrido_mismalinea_distintosegmento):
+                    for i, elem in enumerate(recorrido_mismalinea_distintosegmento): #Imprime el recorrido
                             if isinstance(elem, Estacion) and i == 0:
                                 print(f"Tomar la línea {elem.idl}, estación {elem.nombre}")
                             elif isinstance(elem, Estacion) and i < len(recorrido_mismalinea_distintosegmento)-1:
                                 print(f"Pasarás por la estacion {elem.nombre}")
                             elif isinstance(elem, Estacion) and i == len(recorrido_mismalinea_distintosegmento)-1:
                                 print(f"Bajar en la estación {elem.nombre}")
+
+
+                elif cruce_inicio_abajo: #-------------------------------------------------------Si el cruce de inicio fue hacia abajo
+                            
+                        #Busca el primer cruce en la Matriz T
+                        index_cruce_actual = matriz_T[cruce_inicio.cruceindex][cruce_destino.cruceindex]
+                        index_cruce_actual_list.append(index_cruce_actual) #Añadir el primer cruce al arreglo 
+                        
+                        fila = cruce_inicio.cruceindex
+                        columna = index_cruce_actual
+                        
+                        #Busca los demas cruces en la Matriz T
+                        while True:
+                            if columna == cruce_destino.cruceindex and matriz_T[fila][columna] == 99:
+                                break
+                            columna = matriz_T[fila][columna]
+                            if columna != 99:
+                                index_cruce_actual_list.append(columna)
+                            elif columna == 99:
+                                fila = index_cruce_actual_list[-1]
+                                columna = cruce_destino.cruceindex
+            
+            
+                        
+                        cruces_busqueda = []
+                        
+                        for elemento in index_cruce_actual_list: #Para cada elemento dentro de la lista de cruces
+                            for i, linea in enumerate(lineas):
+                                for j, estacion in enumerate(linea):
+                                    if estacion.cruceindex == elemento: 
+                                        line = i+1
+                                        stationide = estacion.ide     
+                                        stationname = estacion.nombre
+                                        station = Estacion(stationname, stationide, line) #Convierte todo a objetos
+                                        cruces_busqueda.append(station) #Agrega los objetos a la lista
+            
+
+                        
+                                
+                        # cruces_busqueda_copy = cruces_busqueda[:]
+                        # for i, elem in enumerate(cruces_busqueda_copy): #Recorre todo
+                        #     for j in range(elem.ide, cruces_busqueda_copy[i+1].ide):
+                        #         print(lineas[elem.idl-1][j].nombre)
+                        #         recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
+                        
+                                
+                        recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos
+                        
+                        for estacion in recorrido_mismalinea_distintosegmento: #Añade las propiedades de cruce a cada cruce
+                            for cruce in cruces:
+                                if estacion.nombre in cruce.values():
+                                    estacion.cruce = True
+                                    estacion.cruceindex = int(cruce['index'])
+                                                
+                        
+                        for i, elem in enumerate(recorrido_mismalinea_distintosegmento): #Imprime el recorrido
+                                if isinstance(elem, Estacion) and i == 0:
+                                    print(f"Tomar la línea {elem.idl}, estación {elem.nombre}")
+                                elif isinstance(elem, Estacion) and i < len(recorrido_mismalinea_distintosegmento)-1:
+                                    print(f"Pasarás por la estacion {elem.nombre}")
+                                elif isinstance(elem, Estacion) and i == len(recorrido_mismalinea_distintosegmento)-1:
+                                    print(f"Bajar en la estación {elem.nombre}")
 
                         
                     
@@ -456,12 +520,228 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
 
     #-------------------------------------------------------------------------------------------------------------------DISTINTA LINEA                      
     elif linea_inicio != linea_destino: # Si estan en distinta linea
-        print("HI")     
+        
+        #----------------------------------------------------------------Busca si el DESTINO esta desde la estacion INICIO hacia INICIO DE RUTA
+   
+        inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo , cruce_inicio_abajo= abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_inicio, cruce_inicio_abajo) 
+        
+        if salir_verificacion_abajo:
+            return
+        #-----------------------------------------------------------------Busca si el DESTINO esta desde la estacion INICIO hacia FINAL DE RUTA        
+        
+        inicio_recorrido_arriba, cruce_inicio, salir_verificacion_arriba, cruce_inicio_arriba = arriba_inicio(linea_inicio, estacion_inicio, inicio_recorrido_arriba, cruce_inicio, len_linea_inicio, cruce_inicio_arriba)
+        if salir_verificacion_arriba:
+            return     
+        
+        print("HI")
+        
+        #---------Busca si la primera estacion de cruce del destino es la misma que la de inicio, desde la estacion DESTINO hacia INICIO DE RUTA
+ 
+        for estacion in range(lineas[linea_destino-1][estacion_destino].ide, -1, -1):      
+            destino_recorrido_abajo.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
+    
+            if lineas[linea_destino-1][estacion].cruce: # Guarda la primera estacion que es cruce
+                cruce_destino = lineas[linea_destino-1][estacion]
+                break # Si hay un cruce se sale
+            
+        destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
+        
+            
+        #---------------------------------------------------------------------------------------------------------MISMA LINEA, SEGMENTO CONTIGUO    
+        if cruce_destino.nombre == cruce_inicio.nombre:    
+            
+            if inicio_recorrido_arriba: #Si el cruce de inicio fue hacia arriba
+                
+                for estaciondestino in range(len(destino_recorrido_abajo)): # Elimina duplicados en el recorrido
+                    for estacioninicio in range(len(inicio_recorrido_arriba)):
+                        if destino_recorrido_abajo[estaciondestino].nombre == inicio_recorrido_arriba[estacioninicio].nombre:
+                            del inicio_recorrido_arriba[estacioninicio]
+                
+                recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + destino_recorrido_abajo # Junta los recorridos
+                
+                print_mismalinea()
+                
+                    
+            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
+    
+                for estaciondestino in range(len(destino_recorrido_abajo)): #Elimina duplicados en el recorrido
+                        for estacioninicio in range(len(inicio_recorrido_abajo)):
+                            if destino_recorrido_abajo[estaciondestino].nombre == inicio_recorrido_abajo[estacioninicio].nombre:
+                                del inicio_recorrido_abajo[estacioninicio]
+                
+                recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + destino_recorrido_abajo # Junta los recorridos
+
+                print_mismalinea()
+
+        #--------Busca si la primera estacion de cruce es la misma que la del destino, desde la estacion DESTINO hacia FINAL DE RUTA-----------------
+
+        if cruce_destino.nombre == cruce_inicio.nombre:
+
+            if inicio_recorrido_arriba:  #Si el cruce de inicio fue hacia arriba
+            
+                for estacion in range(lineas[linea_destino-1][estacion_destino].ide, len_linea_destino): 
+                    destino_recorrido_arriba.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
+                    
+                    if lineas[linea_destino-1][estacion].cruce: 
+                        cruce_destino = lineas[linea_destino-1][estacion]  # Guarda la primera estacion que es cruce
+                        break # Si hay un cruce se sale
+                
+                destino_recorrido_arriba.reverse() #Invierte el orden del recorrido del destino al cruce
+            
+            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
+                
+                for estaciondestino in range(len(destino_recorrido_arriba)): #Elimina duplicados en el recorrido
+                    for estacioninicio in range(len(inicio_recorrido_arriba)):
+                        if destino_recorrido_arriba[estaciondestino].nombre == inicio_recorrido_arriba[estacioninicio].nombre:
+                            del inicio_recorrido_arriba[estacioninicio]
+                
+                recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + destino_recorrido_arriba # Junta los recorridos
+                
+                print_mismalinea()
+                        
+            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
+                
+                for estaciondestino in range(len(destino_recorrido_arriba)): #Elimina duplicados en el recorrido
+                        for estacioninicio in range(len(inicio_recorrido_abajo)):
+                            if destino_recorrido_arriba[estaciondestino].nombre == inicio_recorrido_abajo[estacioninicio].nombre:
+                                del inicio_recorrido_abajo[estacioninicio]
+                
+                recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + destino_recorrido_arriba # Junta los recorridos
+
+                print_mismalinea()
+
+
+    #------------------------------------------------------------------------------------------------------------------MISMA LINEA SEGMENTO NO CONTIGUO
+            
+        if cruce_destino.nombre != cruce_inicio.nombre: #Si estan en distinto segmento
+            
+            recorrido_entre_segmentos = []
+            
+            if cruce_inicio_arriba: #-------------------------------------------------------Si el cruce de inicio fue hacia arriba
+                        
+                #Busca el primer cruce en la Matriz T
+                index_cruce_actual = matriz_T[cruce_inicio.cruceindex][cruce_destino.cruceindex]
+                index_cruce_actual_list.append(index_cruce_actual) #Añadir el primer cruce al arreglo 
+                
+                fila = cruce_inicio.cruceindex
+                columna = index_cruce_actual
+                
+                #Busca los demas cruces en la Matriz T
+                while True:
+                    if columna == cruce_destino.cruceindex and matriz_T[fila][columna] == 99:
+                        break
+                    columna = matriz_T[fila][columna]
+                    if columna != 99:
+                        index_cruce_actual_list.append(columna)
+                    elif columna == 99:
+                        fila = index_cruce_actual_list[-1]
+                        columna = cruce_destino.cruceindex
+    
+    
+                
+                cruces_busqueda = []
+                
+                for elemento in index_cruce_actual_list: #Para cada elemento dentro de la lista de cruces
+                    for i, linea in enumerate(lineas):
+                        for j, estacion in enumerate(linea):
+                            if estacion.cruceindex == elemento: 
+                                line = i+1
+                                stationide = estacion.ide     
+                                stationname = estacion.nombre
+                                station = Estacion(stationname, stationide, line) #Convierte todo a objetos
+                                cruces_busqueda.append(station) #Agrega los objetos a la lista
+        
+
+                
+                        
+                # cruces_busqueda_copy = cruces_busqueda[:]
+                # for i, elem in enumerate(cruces_busqueda_copy): #Recorre todo
+                #     for j in range(elem.ide, cruces_busqueda_copy[i+1].ide):
+                #         print(lineas[elem.idl-1][j].nombre)
+                #         recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
+                
+                            
+                recorrido_mismalinea_distintosegmento = inicio_recorrido_arriba + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos
+                
+                for estacion in recorrido_mismalinea_distintosegmento: #Añade las propiedades de cruce a cada cruce
+                    for cruce in cruces:
+                        if estacion.nombre in cruce.values():
+                            estacion.cruce = True
+                            estacion.cruceindex = int(cruce['index'])
+                                            
+                
+                for i, elem in enumerate(recorrido_mismalinea_distintosegmento): #Imprime el recorrido
+                        if isinstance(elem, Estacion) and i == 0:
+                            print(f"Tomar la línea {elem.idl}, estación {elem.nombre}")
+                        elif isinstance(elem, Estacion) and i < len(recorrido_mismalinea_distintosegmento)-1:
+                            print(f"Pasarás por la estacion {elem.nombre}")
+                        elif isinstance(elem, Estacion) and i == len(recorrido_mismalinea_distintosegmento)-1:
+                            print(f"Bajar en la estación {elem.nombre}")
+
+
+            elif cruce_inicio_abajo: #-------------------------------------------------------Si el cruce de inicio fue hacia abajo
+                        
+                    #Busca el primer cruce en la Matriz T
+                    index_cruce_actual = matriz_T[cruce_inicio.cruceindex][cruce_destino.cruceindex]
+                    index_cruce_actual_list.append(index_cruce_actual) #Añadir el primer cruce al arreglo 
+                    
+                    fila = cruce_inicio.cruceindex
+                    columna = index_cruce_actual
+                    
+                    #Busca los demas cruces en la Matriz T
+                    while True:
+                        if columna == cruce_destino.cruceindex and matriz_T[fila][columna] == 99:
+                            break
+                        columna = matriz_T[fila][columna]
+                        if columna != 99:
+                            index_cruce_actual_list.append(columna)
+                        elif columna == 99:
+                            fila = index_cruce_actual_list[-1]
+                            columna = cruce_destino.cruceindex
         
         
+                    
+                    cruces_busqueda = []
+                    
+                    for elemento in index_cruce_actual_list: #Para cada elemento dentro de la lista de cruces
+                        for i, linea in enumerate(lineas):
+                            for j, estacion in enumerate(linea):
+                                if estacion.cruceindex == elemento: 
+                                    line = i+1
+                                    stationide = estacion.ide     
+                                    stationname = estacion.nombre
+                                    station = Estacion(stationname, stationide, line) #Convierte todo a objetos
+                                    cruces_busqueda.append(station) #Agrega los objetos a la lista
         
-        
-        
+
+                    
+                            
+                    # cruces_busqueda_copy = cruces_busqueda[:]
+                    # for i, elem in enumerate(cruces_busqueda_copy): #Recorre todo
+                    #     for j in range(elem.ide, cruces_busqueda_copy[i+1].ide):
+                    #         print(lineas[elem.idl-1][j].nombre)
+                    #         recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
+                    
+                            
+                    recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos
+                    
+                    for estacion in recorrido_mismalinea_distintosegmento: #Añade las propiedades de cruce a cada cruce
+                        for cruce in cruces:
+                            if estacion.nombre in cruce.values():
+                                estacion.cruce = True
+                                estacion.cruceindex = int(cruce['index'])
+                                            
+                    
+                    for i, elem in enumerate(recorrido_mismalinea_distintosegmento): #Imprime el recorrido
+                            if isinstance(elem, Estacion) and i == 0:
+                                print(f"Tomar la línea {elem.idl}, estación {elem.nombre}")
+                            elif isinstance(elem, Estacion) and i < len(recorrido_mismalinea_distintosegmento)-1:
+                                print(f"Pasarás por la estacion {elem.nombre}")
+                            elif isinstance(elem, Estacion) and i == len(recorrido_mismalinea_distintosegmento)-1:
+                                print(f"Bajar en la estación {elem.nombre}")
+
+    
+    
         
         
         
