@@ -383,29 +383,26 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 
                 if inicio_recorrido_arriba: #-------------------------------------------------------Si el cruce de inicio fue hacia arriba
                     #destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce                  
-
-                    #Busca el primer cruce en la Matriz T
-                    for columna in range(len(matriz_T[cruce_inicio.cruceindex])): #Recorrer las filas de la matriz T desde 0 hasta la columna del cruce de inicio
-                        if columna == cruce_destino.cruceindex: # Si la columna es la del cruce de destino
-                            index_cruce_actual = matriz_T[cruce_inicio.cruceindex][columna] # Guarda el primer cruce de la Matriz T
-                            
-                            if index_cruce_actual == 99: #Salir cuando no haya mas cruces
-                                break
-                            
-                            index_cruce_actual_list.append(index_cruce_actual) #Añadir el primer cruce al arreglo 
                     
-                    #Busca los demas cruces en la Matriz T
-                    while index_cruce_actual != 99: #Mientras no se encuentre con "infinito"
-                        for columna in range(len(matriz_T[cruce_inicio.cruceindex])): #Recorrer el arreglo de la linea donde estan los puntos inicio y final
-                            if columna == index_cruce_actual:
-                                index_cruce_actual = matriz_T[cruce_inicio.cruceindex][columna] # Guarda los puntos de la Matriz T
-                                
-                                if index_cruce_actual == 99:
-                                    break
-                                
-                                index_cruce_actual_list.append(index_cruce_actual) #Añadir los demas cruces al arreglo 
-                                
-                    index_cruce_actual_list.reverse() #Invertir el orden del recorrido para que se imprima correctamente
+                    #Busca el primer cruce en la Matriz T
+                    index_cruce_actual = matriz_T[cruce_inicio.cruceindex][cruce_destino.cruceindex]
+                    index_cruce_actual_list.append(index_cruce_actual) #Añadir el primer cruce al arreglo 
+                    
+                    fila = cruce_inicio.cruceindex
+                    columna = index_cruce_actual
+                    
+                    while True:
+                        if columna == cruce_destino.cruceindex and matriz_T[fila][columna] == 99:
+                            break
+                        columna = matriz_T[fila][columna]
+                        if columna != 99:
+                            index_cruce_actual_list.append(columna)
+                        elif columna == 99:
+                            fila = index_cruce_actual_list[-1]
+                            columna = cruce_destino.cruceindex
+                            
+         
+                    # index_cruce_actual_list.reverse() #Invertir el orden del recorrido para que se imprima correctamente
                     
                     cruces_busqueda = []
                     
@@ -420,16 +417,13 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                                     cruces_busqueda.append(station) #Agrega los objetos a la lista
           
 
-                    cruces_busqueda_copy = cruces_busqueda[:]
-                    for elem in cruces_busqueda_copy: #Elimina duplicados de cruces_busqueda
-                        if elem.idl != linea_inicio:
-                            cruces_busqueda.remove(elem)
+                    
                             
-                    cruces_busqueda_copy = cruces_busqueda[:]
-                    for i, elem in enumerate(cruces_busqueda_copy): #Recorre todo
-                        for j in range(elem.ide, cruces_busqueda_copy[i+1].ide):
-                            print(lineas[elem.idl-1][j].nombre)
-                            recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
+                    # cruces_busqueda_copy = cruces_busqueda[:]
+                    # for i, elem in enumerate(cruces_busqueda_copy): #Recorre todo
+                    #     for j in range(elem.ide, cruces_busqueda_copy[i+1].ide):
+                    #         print(lineas[elem.idl-1][j].nombre)
+                    #         recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
                     
                     
                     #---------------------------------------------------------------------------------------------JUNTAR E IMPRIMIR                    
@@ -442,21 +436,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                             if estacion.nombre in cruce.values():
                                 estacion.cruce = True
                                 estacion.cruceindex = int(cruce['index'])
-                    
-                    # recorrido_mismalinea_distintosegmento_copy = recorrido_mismalinea_distintosegmento[:]
-                    # for i, elem in enumerate(recorrido_mismalinea_distintosegmento_copy): #Recorre todo
-                    #     if elem.cruce and recorrido_mismalinea_distintosegmento_copy[i+1].cruce: #Si es cruce y el que sigue tambien
-                    #         if elem.idl == recorrido_mismalinea_distintosegmento_copy[i+1].idl: #Si estan en la misma linea
-                    #             for j in range(elem.ide, recorrido_mismalinea_distintosegmento_copy[i+1].ide):
-                    #                 print(lineas[elem.idl-1][j].nombre)
-                    #                 recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
-                                                  
-                    
-                          
-                    input()
-                    
-                    
-                    
+                                               
                     
                     for i, elem in enumerate(recorrido_mismalinea_distintosegmento):
                             if isinstance(elem, Estacion) and i == 0:
