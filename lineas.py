@@ -268,6 +268,8 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
     
     cruce_inicio_abajo = False
     cruce_inicio_arriba = False
+    cruce_destino_abajo = False
+    cruce_destino_arriba = False
 
     #GUARDA EN QUE LINEAS ESTAN--------------------------------------------------------------------------------     
     
@@ -291,7 +293,7 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
         
         #----------------------------------------------------------------Busca si el DESTINO esta desde la estacion INICIO hacia INICIO DE RUTA
    
-        inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo , cruce_inicio_abajo= abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_inicio, cruce_inicio_abajo) 
+        inicio_recorrido_abajo, cruce_inicio, salir_verificacion_abajo, cruce_inicio_abajo = abajo_inicio(linea_inicio, estacion_inicio, inicio_recorrido_abajo, cruce_inicio, cruce_inicio_abajo) 
         
         if salir_verificacion_abajo:
             return
@@ -315,6 +317,9 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     break # Si hay un cruce se sale
                 
             destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
+            
+            
+            
             
                 
             #---------------------------------------------------------------------------------------------------------MISMA LINEA, SEGMENTO CONTIGUO    
@@ -540,11 +545,30 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
         for estacion in range(lineas[linea_destino-1][estacion_destino].ide, -1, -1):      
             destino_recorrido_abajo.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
     
-            if lineas[linea_destino-1][estacion].cruce: # Guarda la primera estacion que es cruce
+            if lineas[linea_destino-1][estacion].cruce and not lineas[linea_destino-1][estacion].ide == 0 and not lineas[linea_destino-1][estacion].ide == len(lineas[linea_inicio-1]):
                 cruce_destino = lineas[linea_destino-1][estacion]
+                cruce_destino_abajo = True
                 break # Si hay un cruce se sale
             
         destino_recorrido_abajo.reverse() #Invierte el orden del recorrido del destino al cruce
+        
+        
+        #---------Busca si la primera estacion de cruce del destino es la misma que la de inicio, desde la estacion DESTINO hacia FINAL DE RUTA
+ 
+        for estacion in range(lineas[linea_destino-1][estacion_destino].ide, len(lineas[linea_destino-1])):      
+            destino_recorrido_arriba.append(lineas[linea_destino-1][estacion]) # Añade estaciones al recorrido hasta que se rompe el ciclo
+    
+            if lineas[linea_destino-1][estacion].cruce and not lineas[linea_destino-1][estacion].ide == 0 and not lineas[linea_destino-1][estacion].ide == len(lineas[linea_inicio-1]):
+                cruce_destino = lineas[linea_destino-1][estacion]
+                cruce_destino_arriba = True
+                break # Si hay un cruce se sale
+            
+        destino_recorrido_arriba.reverse()
+        
+        
+        
+        
+        
         
             
         #---------------------------------------------------------------------------------------------------------MISMA LINEA, SEGMENTO CONTIGUO    
@@ -722,8 +746,11 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                     #         print(lineas[elem.idl-1][j].nombre)
                     #         recorrido_mismalinea_distintosegmento.insert(j, lineas[elem.idl-1][j+1])
                     
-                            
-                    recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos
+                    
+                    if cruce_destino_abajo:
+                        recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + cruces_busqueda + destino_recorrido_abajo # Junta los recorridos
+                    if cruce_destino_arriba:
+                        recorrido_mismalinea_distintosegmento = inicio_recorrido_abajo + cruces_busqueda + destino_recorrido_arriba # Junta los recorridos
                     
                     for estacion in recorrido_mismalinea_distintosegmento: #Añade las propiedades de cruce a cada cruce
                         for cruce in cruces:
@@ -814,7 +841,7 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            # inicio_response = "ABASTOS"
+            # inicio_response = "LOMAS DEL SUR"
             inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
@@ -827,7 +854,7 @@ while True:
             break
     
         while contador_destino > 0:     
-            # destino_response = "HUENTITAN"
+            # destino_response = "ZAPOPAN CENTRO"
             destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
