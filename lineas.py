@@ -611,7 +611,6 @@ def buscar_ruta(inicio, destino, inicio_result, destino_result):
                 
                 destino_recorrido_arriba.reverse() #Invierte el orden del recorrido del destino al cruce
             
-            elif inicio_recorrido_abajo: # Si el cruce de inicio fue hacia abajo
                 
                 for estaciondestino in range(len(destino_recorrido_arriba)): #Elimina duplicados en el recorrido
                     for estacioninicio in range(len(inicio_recorrido_arriba)):
@@ -840,8 +839,8 @@ while True:
         limpiar_pantalla()
         contador_incio, contador_destino = 5, 5
         while contador_incio > 0:   
-            inicio_response = "HUENTITAN"
-            # inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
+            # inicio_response = "ABASTOS"
+            inicio_response = input("Ingrese la estacion de partida: ").upper().strip()
             inicio_result = busqueda_binaria(nombres, inicio_response)
             if inicio_result != -1:
                 break
@@ -853,8 +852,8 @@ while True:
             break
     
         while contador_destino > 0:     
-            destino_response = "ESCULTURA"
-            # destino_response = input("Ingrese la estacion de destino: ").upper().strip()
+            # destino_response = "TABACHINES"
+            destino_response = input("Ingrese la estacion de destino: ").upper().strip()
             destino_result = busqueda_binaria(nombres, destino_response)
             if destino_result != -1:
                 break
